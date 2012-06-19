@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<project name="Jar Publish" default="publish" basedir=".">
+	
+	<property name="baseDir" value="." />
+	<property name="binDir" value="./bin" />
+	<property name="publishDir" value="./publish" />
+	
+	<tstamp>
+	  <format property="TODAY_MY" pattern="MM/dd/yyyy hh:mm"/>
+	</tstamp>
+	
+	<property name="manifest.main.class" value="" />
+	<property name="manifest.classpath" value="./" />
+	<property name="version.number" value="0"/>
+	<property name="build.number" value="1"/>
+	
+	<target name="test_mongosearch">
+		<property name="test.reports" value="./resource/report" /> 
+
+		<path id="test.classpath">
+			<pathelement location="bin" />
+			<fileset dir="lib">
+			    <include name="*.jar"/>
+		  </fileset>
+		</path>
+
+		<junit printsummary="on" haltonfailure="on" fork="true">
+			<classpath refid="test.classpath" />
+			<formatter type="xml" />
+			<test name="net.ion.radon.repository.TestAllMongoSearch" />
+		</junit>
+		<!--
+		<junit fork="yes" printsummary="no" haltonfailure="no">
+		    <batchtest fork="yes" todir="${test.reports}" >
+		      <fileset dir="${classes}">
+		        <include name="**/*Test.class" />
+		      </fileset>
+		    </batchtest>
+		    <formatter type="xml" />
+		    <classpath refid="test.classpath" />
+		  </junit>
+
+		<junitreport todir="${test.reports}">
+		    <fileset dir="${test.reports}">
+		      <include name="TEST-*.xml" />
+		    </fileset>
+		    <report todir="${test.reports}" />
+		</junitreport> -->
+	</target>
+	
+	
+	<target name="publish" depends="test_mongosearch">
+		<delete file="publish/mongosearch_${version.number}.${build.number}.jar"></delete>
+		<jar destfile="publish/mongosearch_${version.number}.${build.number}.jar">
+			<manifest>
+			  <attribute name="Built-By" value="${user.name}"/>
+			  <attribute name="Created-By" value="${user.name}"/>
+			  <!-- attribute name="Main-Class" value="${manifest.main.class}"/ -->
+			  <attribute name="Built-Date" value="${TODAY_MY}" />
+			  <attribute name="Class-Path" value="${manifes.classpath}" />
+			  <section name="common">
+			    <attribute name="Specification-Title" value="i-on mongo search"/>
+			    <attribute name="Specification-Version" value="${version.number}.${build.number}"/>
+			    <attribute name="Specification-Vendor" value="i-on"/>
+			  </section>
+			</manifest>
+			<fileset dir="${binDir}/" includes="net/**" />
+		</jar>
+	</target>
+	
+
+</project>
