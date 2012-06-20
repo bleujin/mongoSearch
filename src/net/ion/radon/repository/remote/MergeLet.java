@@ -1,5 +1,6 @@
 package net.ion.radon.repository.remote;
 
+import net.ion.framework.util.Debug;
 import net.ion.radon.repository.MergeQuery;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.NodeResult;
@@ -19,6 +20,7 @@ public class MergeLet extends RepositoryResource{
 	public MergeResponse merge(MergeBody body){
 		Session session = login() ;
 		
+		Debug.line(body) ;
 		for (Node node : body.getNodes()) {
 			TempNode tnode = node.toTemp(session);
 			session.getCurrentWorkspace().merge(session, MergeQuery.createById(node.getIdentifier()), tnode) ;

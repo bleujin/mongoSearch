@@ -29,16 +29,17 @@ public class TestBaseRemote extends TestCase {
 		
 		this.aradon = new Aradon() ;
 		RemoteClient.attachSection(aradon, rc) ;
-//		this.aradon.startServer(9000) ;
+		this.aradon.startServer(9000) ;
 //		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
 		
-		AradonClient ac = AradonClientFactory.create(aradon) ;
-		this.rrc = RemoteRepositoryCentral.create(ac) ;
+//		AradonClient ac = AradonClientFactory.create(aradon) ;
+		this.rrc = RemoteRepositoryCentral.create("http://localhost:9000") ;
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
 		this.aradon.stop() ;
+		rrc.close() ;
 		super.tearDown();
 	}
 	

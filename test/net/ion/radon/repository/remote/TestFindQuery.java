@@ -4,6 +4,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.mongodb.BasicDBObject;
@@ -130,7 +131,7 @@ public class TestFindQuery extends TestBaseRemote {
 		RemoteSession session = remoteLogin();
 		Node node = session.newNode().put("name", "bleujin");
 
-		MergeBody bo = MergeBody.create(session.getModified());
+		MergeBody bo = MergeBody.create(new ArrayList(session.getModified()));
 
 		ByteArrayOutputStream bout = new ByteArrayOutputStream();
 		ObjectOutputStream oout = new ObjectOutputStream(bout);

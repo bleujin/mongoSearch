@@ -1,28 +1,33 @@
 package net.ion.radon.repository;
 
-import net.ion.radon.client.AradonClient;
+import net.ion.radon.aclient.NewClient;
 import net.ion.radon.repository.remote.RemoteClient;
 
 public class RemoteRepositoryCentral {
 
 	
-	private final AradonClient ac ;
-	private final String sectionName  ;
-	public RemoteRepositoryCentral(AradonClient ac, String sectionName) {
+	private final NewClient ac ;
+	private final String prePath  ;
+	public RemoteRepositoryCentral(NewClient ac, String prePath) {
 		this.ac = ac ;
-		this.sectionName = sectionName ;
+		this.prePath = prePath ;
 	}
 
-	public static RemoteRepositoryCentral create(AradonClient ac) {
-		return new RemoteRepositoryCentral(ac, RemoteClient.DefaultSectionName);
+	public static RemoteRepositoryCentral create(String host) {
+		NewClient nc = NewClient.create();
+		return new RemoteRepositoryCentral(nc, host + "/" + RemoteClient.DefaultSectionName);
 	}
-	public static RemoteRepositoryCentral create(AradonClient ac, String sectionName) {
-		return new RemoteRepositoryCentral(ac, sectionName) ;
+	public static RemoteRepositoryCentral create(NewClient ac, String host, String sectionName) {
+		return new RemoteRepositoryCentral(ac, host + "/" + sectionName) ;
 	}
 
 	public RemoteSession login(String wname) {
-		RemoteRepository repository = RemoteRepository.create(RemoteClient.create(ac, sectionName)) ;
+		RemoteRepository repository = RemoteRepository.create(RemoteClient.create(ac, prePath)) ;
 		return RemoteSession.create(repository, wname) ;
+	}
+
+	public void close() {
+		ac.close() ;
 	}
 
 }

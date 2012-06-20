@@ -1,5 +1,10 @@
 package net.ion.radon.repository.remote;
 
+import net.ion.framework.util.Debug;
+import net.ion.radon.aclient.ClientConfig;
+import net.ion.radon.aclient.NewClient;
+import net.ion.radon.aclient.ClientConfig.Builder;
+import net.ion.radon.aclient.providers.netty.NettyProvider;
 import net.ion.radon.client.AradonClient;
 import net.ion.radon.client.AradonClientFactory;
 import net.ion.radon.core.Aradon;
@@ -30,10 +35,7 @@ public class TestRemoteFirst extends TestCase{
 		RemoteClient.attachSection(aradon, rc) ;
 		
 		this.aradon.startServer(9000) ;
-		AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
-		
-//		AradonClient ac = AradonClientFactory.create(aradon) ;
-		this.rrc = RemoteRepositoryCentral.create(ac) ;
+		this.rrc = RemoteRepositoryCentral.create("http://localhost:9000") ;
 	}
 	
 	@Override
@@ -42,10 +44,12 @@ public class TestRemoteFirst extends TestCase{
 		super.tearDown();
 	}
 	
+	
 	public void testFirst() throws Exception {
 		RemoteSession session = rrc.login(RemoteTestWorkspaceName) ;
 		session.dropWorkspace() ;
-		session.newNode().put("name", "bleujin").put("age", 20).getSession().commit() ;
+		session.newNode().put("name", "bleujin").put("age", 20) ;
+		session.commit() ;
 		
 		Node found = session.createQuery().eq("name", "bleujin").findOne() ;
 		assertEquals(20, found.get("age")) ;
