@@ -37,6 +37,8 @@ public class TestFindQuery extends TestBaseRemote {
 		session.createQuery().find().debugPrint(PageBean.ALL);
 	}
 
+	
+	
 	public void testNewNode() throws Exception {
 		Session cs = super.confirmLogin(RemoteTestWorkspaceName);
 		cs.createQuery().remove();

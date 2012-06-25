@@ -1,0 +1,25 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+
+<root version="0.1">
+	<plugin>
+		<id>net.bleujin.mnodesearch</id>
+		<version>0.1</version>
+		<name>MongoNodeSearch Mini Plugin</name>
+		<description></description>
+		<provider>
+			<homepage>http://www.i-on.net</homepage>
+			<developer>bleujin</developer>
+			<email>bleujin@i-on.net</email>
+		</provider>
+		<license>LGPL</license>
+	</plugin>
+
+	<context>
+		<configured-object id="net.ion.radon.repository.PlugInRunner" scope="application">
+ 			<class-name>net.ion.radon.repository.PlugInRunner</class-name>
+ 		</configured-object>
+	</context>
+
+
+	
+</root>

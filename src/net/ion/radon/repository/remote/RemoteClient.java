@@ -20,6 +20,7 @@ import net.ion.radon.repository.IPropertyFamily;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.NodeObject;
 import net.ion.radon.repository.PropertyQuery;
+import net.ion.radon.repository.RCentral;
 import net.ion.radon.repository.RepositoryCentral;
 import net.ion.radon.repository.Session;
 import net.ion.radon.repository.remote.body.GroupBody;
@@ -120,11 +121,11 @@ public class RemoteClient {
 	}
 	
 	
-	public final static SectionService attachSection(Aradon aradon, RepositoryCentral rc) throws ConfigurationException, InstanceCreationException, Exception{
+	public final static SectionService attachSection(Aradon aradon, RCentral rc) throws ConfigurationException, InstanceCreationException, Exception{
 		
 		return AradonTester.load(aradon)
 			.mergeSection(RemoteClient.DefaultSectionName)
-			.putAttribute(RepositoryCentral.class.getCanonicalName(), rc)
+			.putAttribute(RCentral.class.getCanonicalName(), rc)
 			.addLet("/query/{wname}", "query", FindQueryLet.class)
 			.addLet("/merge/{wname}", "merge", MergeLet.class)
 			.addLet("/delete/{wname}", "delete", DeleteLet.class)

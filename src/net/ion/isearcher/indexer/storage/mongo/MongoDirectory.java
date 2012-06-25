@@ -325,19 +325,19 @@ class NameToFile {
 		return new HashSet<MongoFile>(nameToFileMap.values()).equals(new HashSet<MongoFile>(newFileList)) ;
 	}
 
-	synchronized String[] getFileNames() throws IOException {
+	String[] getFileNames() throws IOException {
 //		nameToFileMap.clear();
 //		fetchInitialContents() ;
 		return nameToFileMap.keySet().toArray(new String[0]);
 	}
 	
-	synchronized MongoFile loadFileFromDBObject(DBObject dbObject) throws IOException {
+	MongoFile loadFileFromDBObject(DBObject dbObject) throws IOException {
 		MongoFile mongoFile = fromDbObject(dbObject);
 		putIfAbsent(mongoFile);
 		return get(mongoFile.getFileName());
 	}
 	
-	synchronized MongoFile createFile(String fileName) throws IOException {
+	MongoFile createFile(String fileName) throws IOException {
 		MongoFile mongoFile = new MongoFile(mdir, fileName, mdir.getNewFileNumber(), mdir.getBlockSize(), mdir.isCompressed());
 		mdir.updateFileMetadata(mongoFile);
 		

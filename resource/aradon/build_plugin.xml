@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="builder_for_jminix" default="deploy">
+
+	<property name="baseDir" value="." />
+	<property name="binDir" value="../../bin" />
+	<property name="publish.dir" value="../../publish/" />
+	<property name="publish.name" value="node.plugin" />
+	
+	<property name="plugin.dir" value="../../plugin/" />
+	<property name="extendlib.dir" value="../../lib/" />
+	
+	<tstamp>
+	  <format property="TODAY_MY" pattern="MM/dd/yyyy hh:mm"/>
+	</tstamp>
+	
+
+	<property name="manifest.classpath" value="./" />
+	<property name="version.number" value="0" />
+	<property name="build.number" value="1" />
+	<property name="user.name" value="bleujin@gmail.com" />
+
+	<target name="publish">
+		<delete file="./${publish.name}_${version.number}.${build.number}.jar"></delete>
+		<jar destfile="./${publish.name}_${version.number}.${build.number}.jar">
+			<manifest>
+			  <attribute name="Built-By" value="${user.name}"/>
+			  <attribute name="Created-By" value="${user.name}"/>
+			  <attribute name="Built-Date" value="${TODAY_MY}" />
+			  <attribute name="Class-Path" value="${manifes.classpath}" />
+			  <section name="common">
+			    <attribute name="Specification-Title" value="i-on aradon platform plugin"/>
+			    <attribute name="Specification-Version" value="${version.number}.${build.number}"/>
+			    <attribute name="Specification-Vendor" value="i-on"/>
+			  </section>
+			</manifest>
+			<fileset dir="${binDir}/" includes="*/**" />
+		</jar>
+	</target>
+	
+	
+	<target name="deploy" depends="publish">
+		<zip destfile="${publish.dir}/${publish.name}.zip">
+			<zipfileset dir="." includes="mnodesearch-plugin-config.xml" fullpath="META-INF/aradon-config.xml"/>
+			<zipfileset dir="./" includes="${publish.name}_${version.number}.${build.number}.jar" fullpath="lib/${publish.name}_${version.number}.${build.number}.jar" />
+			<zipfileset dir="${extendlib.dir}/" includes="isearcher_2.2.jar" fullpath="lib/isearcher_2.2.jar" />
+			<zipfileset dir="${extendlib.dir}/" includes="search36_fat.jar" fullpath="lib/search36_fat.jar" />
+			<zipfileset dir="${extendlib.dir}/" includes="mongonode_0.3.jar" fullpath="lib/mongonode_0.3.jar" />
+			<zipfileset dir="${extendlib.dir}/" includes="mongo-java-driver-2.7.3.jar" fullpath="lib/mongo-java-driver-2.7.3.jar" />
+			<zipfileset dir="${extendlib.dir}/" includes="guava-11.0.1.jar" fullpath="lib/guava-11.0.1.jar" />
+			<zipfileset dir="${extendlib.dir}/" includes="protobuf-java-2.4.1.jar" fullpath="lib/protobuf-java-2.4.1.jar" />
+			<zipfileset dir="${extendlib.dir}/" includes="netty-3.4.6.Final.jar" fullpath="lib/netty-3.4.6.Final.jar" />
+		</zip>
+		<copy todir="./" file="${publish.dir}/${publish.name}.zip"></copy>
+	</target>
+	
+	
+</project>
