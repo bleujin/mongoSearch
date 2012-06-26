@@ -29,7 +29,7 @@ public class TestRemoteFirst extends TestCase{
 	protected final static String RemoteTestWorkspaceName = "rwname";
 	
 	@Override protected void setUp() throws Exception {
-		super.setUp();
+		super.setUp() ;
 		RepositoryCentral rc = RepositoryCentral.testCreate() ;
 		this.aradon = new Aradon() ;
 		RemoteClient.attachSection(aradon, rc) ;
@@ -37,14 +37,15 @@ public class TestRemoteFirst extends TestCase{
 		this.aradon.startServer(9000) ;
 		this.rrc = RemoteRepositoryCentral.create("http://localhost:9000") ;
 	}
-	
+
+
 	@Override
 	protected void tearDown() throws Exception {
 		this.aradon.stop() ;
 		super.tearDown();
 	}
-	
-	
+
+
 	public void testFirst() throws Exception {
 		RemoteSession session = rrc.login(RemoteTestWorkspaceName) ;
 		session.dropWorkspace() ;

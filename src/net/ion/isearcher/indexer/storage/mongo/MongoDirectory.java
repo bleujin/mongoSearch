@@ -1,16 +1,11 @@
 package net.ion.isearcher.indexer.storage.mongo;
 
 import java.io.IOException;
-import java.net.UnknownHostException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-import net.ion.framework.util.Closure;
-import net.ion.framework.util.CollectionUtil;
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 
 import com.google.common.cache.Cache;
