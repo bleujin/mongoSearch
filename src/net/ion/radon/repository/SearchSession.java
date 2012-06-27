@@ -1,13 +1,12 @@
 package net.ion.radon.repository;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import net.ion.framework.util.CaseInsensitiveHashMap;
-import net.ion.framework.util.DateFormatUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.isearcher.common.MyDocument;
 import net.ion.isearcher.impl.Central;
@@ -15,19 +14,21 @@ import net.ion.isearcher.impl.JobEntry;
 import net.ion.isearcher.indexer.write.IWriter;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.index.IndexReader;
 
 public class SearchSession implements Session {
 
 	private Session inner;
 	private Central central ;
 	private Analyzer analyzer;
+	private List<String> ignoreBodyField; 
+	
 	private Map<String, SearchWorkspace> wss = MapUtil.newCaseInsensitiveMap() ;
 	
 	private SearchSession(Session inner, Central central, Analyzer analyzer) {
 		this.inner = inner;
 		this.central = central ;
 		this.analyzer = analyzer;
+		this.ignoreBodyField = new ArrayList<String>();
 	}
 
 	static SearchSession create(Session inner, Central central, Analyzer analyzer) {
@@ -164,16 +165,22 @@ public class SearchSession implements Session {
 				int result = 0 ;
 				while (nc.hasNext()){
 					MyDocument doc = SearchWorkspace.createDocument(nc.next()) ;
+					doc.setIgnoreBodyField(ignoreBodyField);
 					writer.updateDocument(doc) ;
 					result++ ;
 				}
 				return result;
 			}
 		}) ;
-		
-		
 	}
 
+	public void setIgnoreBodyField(String... ignoreBodyFields) {
+		for(String ignoreField : ignoreBodyFields) {
+			if(!ignoreBodyField.contains(ignoreBodyField)){
+				ignoreBodyField.add(ignoreField);
+			}
+		}
+	}
 	
 	public NodeResult merge(String idOrPath, TempNode tnode) {
 		return inner.merge(idOrPath, tnode);

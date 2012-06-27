@@ -49,7 +49,7 @@
 	</target>
 	
 	
-	<target name="publish" depends="test_mongosearch">
+	<target name="publish">
 		<delete file="publish/mongosearch_${version.number}.${build.number}.jar"></delete>
 		<jar destfile="publish/mongosearch_${version.number}.${build.number}.jar">
 			<manifest>
@@ -67,6 +67,10 @@
 			<fileset dir="${binDir}/" includes="net/**" />
 		</jar>
 	</target>
-	
+
+	<target name="copy_novision" depends="publish">
+		<echo>Copy to ICS6</echo>
+		<copy file="publish/mongosearch_${version.number}.${build.number}.jar" todir="../../workspace/ICS6/ics/WEB-INF/lib/" />
+	</target>
 
 </project>

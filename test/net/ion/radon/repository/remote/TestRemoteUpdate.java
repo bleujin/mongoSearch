@@ -100,7 +100,7 @@ public class TestRemoteUpdate extends TestBaseRemote{
 
 	
 	
-	public void testInc() throws Exception {
+	public void xtestInc() throws Exception {
 		Session cs = super.confirmLogin(RemoteTestWorkspaceName) ;
 		cs.createQuery().remove() ;
 		Node savedNode = cs.newNode() ;
