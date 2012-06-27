@@ -174,7 +174,7 @@ public class SearchSession implements Session {
 		}) ;
 	}
 
-	public void setIgnoreBodyField(String... ignoreBodyFields) {
+	public void addIgnoreBodyField(String... ignoreBodyFields) {
 		for(String ignoreField : ignoreBodyFields) {
 			if(!ignoreBodyField.contains(ignoreBodyField)){
 				ignoreBodyField.add(ignoreField);
