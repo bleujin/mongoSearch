@@ -97,14 +97,20 @@ public class RemoteClient {
 	}
 
 	public void makeIndex(String wname, IPropertyFamily props, String indexName, boolean unique) {
-		ISerialAsyncRequest req = ac.createSerialRequest(makePath("workspace", wname)) ;
-		req.post(WorkspaceBody.create(props, indexName, unique), MergeResponse.class) ;
+		try {
+			ISerialAsyncRequest req = ac.createSerialRequest(makePath("workspace", wname)) ;
+			req.post(WorkspaceBody.create(props, indexName, unique), MergeResponse.class).get() ;
+		} catch (Throwable e) {
+			throw new IllegalStateException(e) ;
+		} // sync
 	}
 
 	public List<NodeObject> viewIndexInfo(String wname) {
 		try {
 			ISerialAsyncRequest req = ac.createSerialRequest(makePath("workspace", wname)) ;
-			return req.get(List.class).get() ;
+			ListenableFuture<List> future = req.get(List.class);
+			
+			return future.get() ;
 		} catch (Throwable e) {
 			throw new IllegalStateException(e) ;
 		}

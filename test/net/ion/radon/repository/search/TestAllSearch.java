@@ -14,6 +14,9 @@ public class TestAllSearch extends TestSuite {
 		suite.addTestSuite(TestSearchSession.class) ;
 		suite.addTestSuite(TestSearchWorkspace.class) ;
 		
+		
+		// suite.addTestSuite(TestBigIndex.class) ;
+		
 		return suite ;
 	}
 }

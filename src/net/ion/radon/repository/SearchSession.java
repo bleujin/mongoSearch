@@ -3,10 +3,13 @@ package net.ion.radon.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
+import net.ion.framework.util.CaseInsensitiveHashMap;
+import net.ion.framework.util.DateFormatUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.isearcher.common.MyDocument;
 import net.ion.isearcher.impl.Central;
@@ -14,6 +17,7 @@ import net.ion.isearcher.impl.JobEntry;
 import net.ion.isearcher.indexer.write.IWriter;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.index.IndexReader;
 
 public class SearchSession implements Session {
 

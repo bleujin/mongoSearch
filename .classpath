@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.5.0_22"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="lib/iframework_2.3.jar"/>
@@ -8,13 +7,14 @@
 	<classpathentry kind="lib" path="lib/aradon_0.7.jar"/>
 	<classpathentry kind="lib" path="lib/mongonode_0.3.jar"/>
 	<classpathentry kind="lib" path="lib/rest_fat.jar"/>
-	<classpathentry kind="lib" path="lib/mongo-java-driver-2.7.3.jar"/>
 	<classpathentry kind="lib" path="lib/search36_fat.jar"/>
 	<classpathentry kind="lib" path="lib/guava-11.0.1.jar"/>
 	<classpathentry kind="lib" path="lib/protobuf-java-2.4.1.jar"/>
 	<classpathentry kind="lib" path="lib/apache_extend_fat.jar"/>
 	<classpathentry kind="lib" path="lib/netty-3.4.6.Final.jar"/>
 	<classpathentry kind="lib" path="lib/aclient_0.1.jar"/>
+	<classpathentry kind="lib" path="lib/mongo-2.8.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk1.6.0_21"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

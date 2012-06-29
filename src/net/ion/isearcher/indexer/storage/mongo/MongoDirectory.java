@@ -299,19 +299,19 @@ class NameToFile {
 		fetchInitialContents() ;
 	}
 
-	synchronized void put(MongoFile mfile) throws MongoException, IOException {
+	void put(MongoFile mfile) throws MongoException, IOException {
 		nameToFileMap.put(mfile.getFileName(), mfile);
 	}
 
-	synchronized void remove(String fileName) {
+	void remove(String fileName) {
 		nameToFileMap.remove(fileName) ;
 	}
 
-	synchronized void putIfAbsent(MongoFile mongoFile) {
+	void putIfAbsent(MongoFile mongoFile) {
 		nameToFileMap.putIfAbsent(mongoFile.getFileName(), mongoFile) ;
 	}
 
-	synchronized MongoFile get(String filename) {
+	MongoFile get(String filename) {
 		return nameToFileMap.get(filename);
 	}
 	
@@ -346,6 +346,7 @@ class NameToFile {
 		DBObject query = new BasicDBObject();
 		
 		DBCursor cursor = c.find(query);
+		
 		while (cursor.hasNext()) {
 			MongoFile mf = loadFileFromDBObject(cursor.next());
 			result.add(mf) ;

@@ -2,15 +2,13 @@ package net.ion.radon.repository.remote.rest;
 
 import java.util.Date;
 
+import junit.framework.TestCase;
 import net.ion.framework.util.Debug;
 import net.ion.radon.repository.InListNode;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.NodeCursor;
-import net.ion.radon.repository.RemoteRepository;
 import net.ion.radon.repository.RemoteRepositoryCentral;
 import net.ion.radon.repository.RemoteSession;
-import net.ion.radon.repository.remote.RemoteClient;
-import junit.framework.TestCase;
 
 public class TestAmazonLet extends TestCase {
 

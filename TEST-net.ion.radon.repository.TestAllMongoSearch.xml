@@ -1,89 +1,113 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="1" failures="0" hostname="novision-W7" name="net.ion.radon.repository.TestAllMongoSearch" tests="1" time="0.0" timestamp="2012-06-27T01:41:47">
+<testsuite errors="0" failures="0" hostname="bleujin-SV" name="net.ion.radon.repository.TestAllMongoSearch" tests="26" time="1.217" timestamp="2012-06-29T06:21:41">
   <properties>
     <property name="java.vendor" value="Sun Microsystems Inc." />
     <property name="sun.java.launcher" value="SUN_STANDARD" />
-    <property name="eclipse.pdebuild.templates" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/templates/" />
-    <property name="sun.management.compiler" value="HotSpot Client Compiler" />
+    <property name="eclipse.pdebuild.templates" value="/D:/eclipse/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/templates/" />
+    <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers" />
     <property name="os.name" value="Windows 7" />
-    <property name="sun.boot.class.path" value="C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\rt.jar;C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\i18n.jar;C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\sunrsasign.jar;C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\jsse.jar;C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\jce.jar;C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\charsets.jar;C:\Program Files (x86)\Java\jdk1.5.0_22\jre\classes" />
-    <property name="TODAY" value="June 27 2012" />
+    <property name="sun.boot.class.path" value="C:\java\jdk6_27\jre\lib\resources.jar;C:\java\jdk6_27\jre\lib\rt.jar;C:\java\jdk6_27\jre\lib\sunrsasign.jar;C:\java\jdk6_27\jre\lib\jsse.jar;C:\java\jdk6_27\jre\lib\jce.jar;C:\java\jdk6_27\jre\lib\charsets.jar;C:\java\jdk6_27\jre\lib\modules\jdk.boot.jar;C:\java\jdk6_27\jre\classes" />
+    <property name="TODAY" value="June 29 2012" />
     <property name="build.number" value="1" />
     <property name="sun.desktop" value="windows" />
     <property name="java.vm.specification.vendor" value="Sun Microsystems Inc." />
-    <property name="ant.home" value="C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145" />
-    <property name="java.runtime.version" value="1.5.0_22-b03" />
+    <property name="ant.home" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145" />
+    <property name="java.runtime.version" value="1.6.0_27-b07" />
     <property name="version.number" value="0" />
-    <property name="user.name" value="novision" />
-    <property name="ant.file.Jar Publish" value="D:\egit\mongoSearch\build.xml" />
+    <property name="user.name" value="bleujin" />
+    <property name="ant.file.Jar Publish" value="D:\github\mongoSearch\build.xml" />
     <property name="publishDir" value="./publish" />
     <property name="user.language" value="ko" />
-    <property name="sun.boot.library.path" value="C:\Program Files (x86)\Java\jdk1.5.0_22\jre\bin" />
+    <property name="sun.boot.library.path" value="C:\java\jdk6_27\jre\bin" />
     <property name="manifest.main.class" value="" />
     <property name="ant.project.name" value="Jar Publish" />
-    <property name="DSTAMP" value="20120627" />
-    <property name="java.version" value="1.5.0_22" />
+    <property name="DSTAMP" value="20120629" />
+    <property name="java.version" value="1.6.0_27" />
     <property name="user.timezone" value="" />
-    <property name="sun.arch.data.model" value="32" />
-    <property name="java.endorsed.dirs" value="C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\endorsed" />
-    <property name="sun.cpu.isalist" value="pentium_pro+mmx pentium_pro pentium+mmx pentium i486 i386 i86" />
+    <property name="sun.arch.data.model" value="64" />
+    <property name="java.endorsed.dirs" value="C:\java\jdk6_27\jre\lib\endorsed" />
+    <property name="sun.cpu.isalist" value="amd64" />
     <property name="sun.jnu.encoding" value="MS949" />
     <property name="file.encoding.pkg" value="sun.io" />
     <property name="file.separator" value="\" />
     <property name="java.specification.name" value="Java Platform API Specification" />
-    <property name="java.class.version" value="49.0" />
+    <property name="java.class.version" value="50.0" />
     <property name="user.country" value="KR" />
-    <property name="java.home" value="C:\Program Files (x86)\Java\jdk1.5.0_22\jre" />
-    <property name="java.vm.info" value="mixed mode, sharing" />
-    <property name="ant.file" value="D:\egit\mongoSearch\build.xml" />
+    <property name="java.home" value="C:\java\jdk6_27\jre" />
+    <property name="java.vm.info" value="mixed mode" />
+    <property name="ant.file" value="D:\github\mongoSearch\build.xml" />
     <property name="os.version" value="6.1" />
     <property name="test.reports" value="./resource/report" />
     <property name="path.separator" value=";" />
-    <property name="java.vm.version" value="1.5.0_22-b03" />
+    <property name="java.vm.version" value="20.2-b06" />
     <property name="user.variant" value="" />
-    <property name="ant.library.dir" value="C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib" />
+    <property name="ant.library.dir" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib" />
     <property name="manifest.classpath" value="./" />
     <property name="java.awt.printerjob" value="sun.awt.windows.WPrinterJob" />
     <property name="sun.io.unicode.encoding" value="UnicodeLittle" />
     <property name="awt.toolkit" value="sun.awt.windows.WToolkit" />
-    <property name="eclipse.pdebuild.scripts" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/scripts/" />
-    <property name="user.home" value="C:\Users\novision" />
+    <property name="eclipse.pdebuild.scripts" value="/D:/eclipse/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/scripts/" />
+    <property name="user.home" value="C:\Users\bleujin" />
     <property name="java.specification.vendor" value="Sun Microsystems Inc." />
     <property name="binDir" value="./bin" />
-    <property name="java.library.path" value="C:\Program Files\Java\jdk1.6.0_21\bin;.;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;c:\oracle\product\10.2.0\client_1\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Kaspersky Lab\Kaspersky Anti-Virus 6.0 for Windows Workstations MP4\;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files (x86)\CVSNT\;C:\eclipse\configuration\org.eclipse.osgi\bundles\564\1\.cp" />
+    <property name="java.library.path" value="C:\java\jdk6_27\jre\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;C:/Program Files (x86)/Java/jre6/bin/client;C:/Program Files (x86)/Java/jre6/bin;C:\Ruby\bin;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\oracle\product\10.2.0\client_1\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\10.0\DLLShared\;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files (x86)\QuickTime\QTSystem\;C:\java\jdk5_22\bin;C:\Ruby\bin;C:\Program Files\Common Files\Microsoft Shared\Windows Live;C:\Program Files (x86)\Common Files\Microsoft Shared\Windows Live;C:\oracle\product\10.2.0\client_1\bin;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Program Files (x86)\Common Files\Roxio Shared\DLLShared\;C:\Program Files (x86)\Common Files\Roxio Shared\10.0\DLLShared\;C:\Program Files\MySQL\MySQL Server 5.5\bin;C:\Program Files (x86)\Windows Live\Shared;C:\Program Files\TortoiseSVN\bin;C:\Program Files (x86)\Git\cmd;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Users\bleujin\ec2home\bin;C:\Program Files (x86)\Mozilla Firefox;." />
     <property name="java.vendor.url" value="http://java.sun.com/" />
     <property name="java.vm.vendor" value="Sun Microsystems Inc." />
-    <property name="java.runtime.name" value="Java(TM) 2 Runtime Environment, Standard Edition" />
-    <property name="java.class.path" value="C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-antlr.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-apache-bcel.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-apache-bsf.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-apache-log4j.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-apache-oro.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-apache-regexp.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-apache-resolver.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-commons-logging.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-commons-net.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-jai.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-javamail.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-jdepend.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-jmf.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-jsch.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-junit.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-launcher.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-netrexx.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-nodeps.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-starteam.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-stylebook.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-swing.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-trax.jar;C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant-weblogic.jar;C:\eclipse\configuration\org.eclipse.osgi\bundles\788\1\.cp\fatjar.jar;C:\eclipse\configuration\org.eclipse.osgi\bundles\52\1\.cp\lib\antdebug.jar;C:\eclipse\configuration\org.eclipse.osgi\bundles\52\1\.cp\lib\remote.jar;C:\eclipse\configuration\org.eclipse.osgi\bundles\53\1\.cp\lib\remoteAnt.jar;C:\Program Files (x86)\Java\jdk1.5.0_22\lib\tools.jar;C:\eclipse\plugins\org.eclipse.swt.win32.win32.x86_64_3.6.0.v3650b.jar" />
+    <property name="java.runtime.name" value="Java(TM) SE Runtime Environment" />
+    <property name="sun.java.command" value="org.apache.tools.ant.taskdefs.optional.junit.JUnitTestRunner net.ion.radon.repository.TestAllMongoSearch filtertrace=true haltOnError=false haltOnFailure=true formatter=org.apache.tools.ant.taskdefs.optional.junit.SummaryJUnitResultFormatter showoutput=false outputtoformatters=true logtestlistenerevents=true formatter=org.apache.tools.ant.taskdefs.optional.junit.XMLJUnitResultFormatter,D:\github\mongoSearch\TEST-net.ion.radon.repository.TestAllMongoSearch.xml crashfile=D:\github\mongoSearch\junitvmwatcher3430005561748676829.properties propsfile=D:\github\mongoSearch\junit1930434371932021916.properties" />
+    <property name="java.class.path" value="D:\github\mongoSearch\bin;D:\github\mongoSearch\lib\aclient_0.1.jar;D:\github\mongoSearch\lib\apache_extend_fat.jar;D:\github\mongoSearch\lib\aradon_0.7.jar;D:\github\mongoSearch\lib\guava-11.0.1.jar;D:\github\mongoSearch\lib\iframework_2.3.jar;D:\github\mongoSearch\lib\isearcher_2.2.jar;D:\github\mongoSearch\lib\junit.jar;D:\github\mongoSearch\lib\mongo-2.8.0.jar;D:\github\mongoSearch\lib\mongonode_0.3.jar;D:\github\mongoSearch\lib\netty-3.2.7.Final.jar;D:\github\mongoSearch\lib\netty-3.4.6.Final.jar;D:\github\mongoSearch\lib\protobuf-java-2.4.1.jar;D:\github\mongoSearch\lib\rest_fat.jar;D:\github\mongoSearch\lib\search36_fat.jar;D:\github\mongoSearch;C:\Program Files (x86)\Java\jre6\lib\ext\QTJava.zip;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-launcher.jar;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar;D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant-junit.jar" />
     <property name="ant.version" value="Apache Ant version 1.7.1 compiled on June 27 2008" />
-    <property name="TSTAMP" value="1041" />
+    <property name="TSTAMP" value="1521" />
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification" />
     <property name="java.vm.specification.version" value="1.0" />
     <property name="sun.cpu.endian" value="little" />
-    <property name="sun.os.patch.level" value="Service Pack 1" />
-    <property name="eclipse.pdebuild.home" value="/C:/eclipse/plugins/org.eclipse.pde.build_3.6.0.v20100603/./" />
-    <property name="java.io.tmpdir" value="C:\Users\novision\AppData\Local\Temp\" />
+    <property name="sun.os.patch.level" value="" />
+    <property name="eclipse.pdebuild.home" value="/D:/eclipse/plugins/org.eclipse.pde.build_3.5.2.R35x_20100114/./" />
+    <property name="java.io.tmpdir" value="C:\Users\bleujin\AppData\Local\Temp\" />
     <property name="java.vendor.url.bug" value="http://java.sun.com/cgi-bin/bugreport.cgi" />
-    <property name="os.arch" value="x86" />
+    <property name="os.arch" value="amd64" />
     <property name="java.awt.graphicsenv" value="sun.awt.Win32GraphicsEnvironment" />
-    <property name="java.ext.dirs" value="C:\Program Files (x86)\Java\jdk1.5.0_22\jre\lib\ext" />
-    <property name="user.dir" value="D:\egit\mongoSearch" />
+    <property name="java.ext.dirs" value="C:\java\jdk6_27\jre\lib\ext;C:\Windows\Sun\Java\lib\ext" />
+    <property name="user.dir" value="D:\github\mongoSearch" />
     <property name="line.separator" value="
 " />
-    <property name="java.vm.name" value="Java HotSpot(TM) Client VM" />
-    <property name="basedir" value="D:\egit\mongoSearch" />
+    <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM" />
+    <property name="basedir" value="D:\github\mongoSearch" />
     <property name="baseDir" value="." />
-    <property name="ant.java.version" value="1.5" />
-    <property name="TODAY_MY" value="06/27/2012 10:41" />
-    <property name="ant.core.lib" value="C:\eclipse\plugins\org.apache.ant_1.7.1.v20100518-1145\lib\ant.jar" />
+    <property name="ant.java.version" value="1.6" />
+    <property name="TODAY_MY" value="06/29/2012 03:21" />
+    <property name="ant.core.lib" value="D:\eclipse\plugins\org.apache.ant_1.7.1.v20090120-1145\lib\ant.jar" />
     <property name="file.encoding" value="MS949" />
-    <property name="java.specification.version" value="1.5" />
+    <property name="java.specification.version" value="1.6" />
   </properties>
-  <testcase classname="net.ion.radon.repository.TestAllMongoSearch" name="testDropSpace" time="0.0010">
-    <error message="Forked Java VM exited abnormally. Please note the time in the report does not reflect the time until the VM exit." type="junit.framework.AssertionFailedError">junit.framework.AssertionFailedError: Forked Java VM exited abnormally. Please note the time in the report does not reflect the time until the VM exit.
-	at org.eclipse.ant.internal.launching.remote.EclipseDefaultExecutor.executeTargets(EclipseDefaultExecutor.java:32)
-	at org.eclipse.ant.internal.launching.remote.InternalAntRunner.run(InternalAntRunner.java:423)
-	at org.eclipse.ant.internal.launching.remote.InternalAntRunner.main(InternalAntRunner.java:137)
-</error>
-  </testcase>
+  <testcase classname="net.ion.radon.repository.search.TestDocument" name="testCreateDocument" time="0.477" />
+  <testcase classname="net.ion.radon.repository.search.TestDocument" name="testInner" time="0.03" />
+  <testcase classname="net.ion.radon.repository.search.TestDocument" name="testNodeInfo" time="0.018" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchFind" name="testTerm" time="0.033" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchFind" name="testLessThen" time="0.035" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchFind" name="testGreaterThen" time="0.029" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchFind" name="testBetween" time="0.028" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchFind" name="testBetweenTerm" time="0.026" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchFind" name="testSort" time="0.038" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdate" name="testTempNode" time="0.032" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdate" name="testRemoveNode" time="0.016" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdate" name="testDropWorkspace" time="0.026" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdate" name="testOverwriteOne" time="0.018" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdate" name="testUpdateOn" time="0.024" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdate" name="testInc" time="0.014" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdateChain" name="testDropSpace" time="0.015" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdateChain" name="testChainUpdate" time="0.022" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdateChain" name="testChainUpdateMulti" time="0.024" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchUpdateChain" name="testChainMerge" time="0.029" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchSession" name="testSync" time="0.029" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchSession" name="testSyncLimit" time="0.037" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchSession" name="testIndexInfo" time="0.02" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchWorkspace" name="testChangeWorkspace" time="0.046" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchWorkspace" name="testOtherWorkspaceSearch" time="0.044" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchWorkspace" name="testAradonId" time="0.019" />
+  <testcase classname="net.ion.radon.repository.search.TestSearchWorkspace" name="testMakeIndex" time="0.02" />
+  <system-out><![CDATA[[====================, [bleujin, hero]] by net.ion.radon.repository.search.TestSearchUpdate:testUpdateOn[20120629-152142]
+[[{numdoc=0, lastmodified=2012-06-29 15:21:42, allnumdoc=0, indexpath=org.apache.lucene.store.RAMDirectory@255b5c1f lockFactory=org.apache.lucene.store.SingleInstanceLockFactory@10fd0a62}]] by net.ion.radon.repository.search.TestSearchSession:testIndexInfo[20120629-152142]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
 </testsuite>

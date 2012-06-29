@@ -14,7 +14,7 @@ public class TestAllMongoSearch extends TestSuite {
 	public static TestSuite suite(){
 		TestSuite suite = new TestSuite("Test All MongoSearch") ;
 		
-		suite.addTest(TestAllRemote.suite()) ;
+//		suite.addTest(TestAllRemote.suite()) ;
 		suite.addTest(TestAllSearch.suite()) ;
 
 		
