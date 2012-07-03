@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 
 import com.google.common.cache.Cache;
@@ -271,8 +272,11 @@ public class MongoDirectory implements NosqlDirectory {
 
 	public NosqlDirectory ifModified() throws IOException {
 		
+		
+		
 		if (nameToFile.isAllMatchFile()) return this ;
-
+		
+		Debug.line("isModified") ;
 		return new MongoDirectory(mongo, dbname, indexName, this.sharded, this.compressed, this.blockSize) ;
 	}
 	
@@ -317,7 +321,9 @@ class NameToFile {
 	
 	boolean isAllMatchFile() throws MongoException, IOException{
 		List<MongoFile> newFileList = fetchFileList() ;
-		return new HashSet<MongoFile>(nameToFileMap.values()).equals(new HashSet<MongoFile>(newFileList)) ;
+		boolean result = new HashSet<MongoFile>(nameToFileMap.values()).equals(new HashSet<MongoFile>(newFileList));
+		
+		return result ;
 	}
 
 	String[] getFileNames() throws IOException {
@@ -350,6 +356,12 @@ class NameToFile {
 		while (cursor.hasNext()) {
 			MongoFile mf = loadFileFromDBObject(cursor.next());
 			result.add(mf) ;
+		}
+		
+		try {
+			Thread.sleep(30) ;
+		} catch (InterruptedException e) {
+			e.printStackTrace();
 		}
 		cursor.close() ;
 		return result ;

@@ -54,7 +54,7 @@ class ScheduleChecker extends RefreshStrategy {
 		this.unit = unit;
 	}
 
-	public void refresh() throws IOException {
+	public synchronized void refresh() throws IOException {
 		try {
 			NosqlDirectory newDir = getNosqlDirectory().ifModified();
 			if (getNosqlDirectory() != newDir){
