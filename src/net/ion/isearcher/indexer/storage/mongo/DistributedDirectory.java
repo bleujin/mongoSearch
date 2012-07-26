@@ -3,6 +3,8 @@ package net.ion.isearcher.indexer.storage.mongo;
 import java.io.IOException;
 import java.sql.Ref;
 
+import net.ion.framework.util.Debug;
+
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.IndexInput;
 import org.apache.lucene.store.IndexOutput;

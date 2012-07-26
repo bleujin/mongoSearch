@@ -41,6 +41,22 @@ public class TestSearchUpdate extends TestBaseSearch {
 		assertEquals(0, session.createSearchQuery().find().getTotalCount()) ;
 	}
 	
+	public void testRemoveNode2() throws Exception {
+		session.createQuery().remove() ;
+		
+		session.newNode().put("name", "bleujin").getSession().commit() ;
+		Node found = session.createQuery().eq("name", "bleujin").findOne() ; 
+		
+		assertEquals(true, found != null) ;
+		
+		session.createQuery().eq("name", "bleujin").remove() ;
+		session.waitForFlushed() ;
+
+		assertEquals(0, session.createQuery().find().count()) ;
+		assertEquals(0, session.createSearchQuery().find().getTotalCount()) ;
+	}
+	
+	
 	public void testDropWorkspace() throws Exception {
 		session.createQuery().remove() ;
 		session.newNode().put("name", "bleujin").getSession().commit() ;

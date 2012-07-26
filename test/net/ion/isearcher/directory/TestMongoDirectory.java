@@ -36,7 +36,7 @@ public class TestMongoDirectory extends ISTestCase {
 	public void setUp() throws Exception {
 		super.setUp();
 
-		dir = StorageFac.testRecreateToMongo("61.250.201.78", "search", "storageTest");
+		dir = StorageFac.createToMongo("61.250.201.78", "search", "storageTest");
 	}
 	
 	public void testIndex() throws Exception {
@@ -93,8 +93,8 @@ public class TestMongoDirectory extends ISTestCase {
 		IWriter indexer = cram.newIndexer(new MyKoreanAnalyzer());
 		indexer.begin(dir.getLockID()) ;
 		String readString = IOUtil.toString(new FileReader(new File("test/" + StringUtil.replace(this.getClass().getCanonicalName(), ".", "/")) + ".java")) ;
-		String extString = IOUtil.toString(new FileReader(new File("../ICSS6/icss/common/ext/ext-all-debug.js"))) ;
-		for (int i = 0; i < 10; i++) {
+		String extString = IOUtil.toString(new FileReader(new File("build.xml"))) ;
+		for (int i = 0; i < 1000; i++) {
 			MyDocument doc = MyDocument.testDocument();
 			doc.keyword("name", "bleujin") ;
 			doc.text("file", extString) ;

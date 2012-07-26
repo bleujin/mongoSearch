@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
+import org.apache.lucene.index.IndexReader;
+
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 
@@ -25,12 +27,12 @@ import com.mongodb.MongoException;
 import com.mongodb.WriteConcern;
 
 public class MongoDirectory implements NosqlDirectory {
-	
+
 	private static final String $INC = "$inc";
 	private static final String _ID = "_id";
 	private static final String FILE_COUNTER = "fileCounter";
 	private static final String COUNTER = "counter";
-	
+
 	public static final String BLOCK_SIZE = "blockSize";
 	public static final String BLOCK_NUMBER = "blockNumber";
 	public static final String LAST_MODIFIED = "lastModified";
@@ -38,34 +40,34 @@ public class MongoDirectory implements NosqlDirectory {
 	public static final String FILE_NAME = "fileName";
 	public static final String FILE_NUMBER = "fileNumber";
 	public static final String COMPRESSED = "compressed";
-	
+
 	public static String BYTES = "bytes";
-	
+
 	public static final String FILES_SUFFIX = ".files";
 	public static final String BLOCKS_SUFFIX = ".blocks";
 	public static final String COUNTER_SUFFIX = ".counter";
-	
+
 	private final Mongo mongo;
 	private final String dbname;
 	private final String indexName;
-	private final boolean sharded ;
+	private final boolean sharded;
 	private final int blockSize;
 	private final boolean compressed;
-	
-	public static final int DEFAULT_BLOCK_SIZE = 1024 * 128;
-	public static final int DEFAULT_DIRTY_BLOCK_MAX = 12500;
-	
-	private NameToFile nameToFile ;
-	
+
+	public static final int DEFAULT_BLOCK_SIZE = 1024 * 128; // 1024 * 128
+	public static final int DEFAULT_DIRTY_BLOCK_MAX = 4096; // 12500
+
+	private NameToFile nameToFile;
+
 	private static Cache<MongoBlock, MongoBlock> dirtyBlockCache;
-	
+
 	public static void setDirtyCacheSize(int blocks) {
 		ConcurrentMap<MongoBlock, MongoBlock> oldMap = null;
 		if (dirtyBlockCache != null) {
 			oldMap = dirtyBlockCache.asMap();
 		}
 		RemovalListener<MongoBlock, MongoBlock> listener = new RemovalListener<MongoBlock, MongoBlock>() {
-			
+
 			public void onRemoval(RemovalNotification<MongoBlock, MongoBlock> notification) {
 				if (RemovalCause.SIZE.equals(notification.getCause())) {
 					MongoBlock mb = notification.getKey();
@@ -82,15 +84,15 @@ public class MongoDirectory implements NosqlDirectory {
 			oldMap.clear();
 		}
 	}
-	
+
 	static {
 		setDirtyCacheSize(DEFAULT_DIRTY_BLOCK_MAX);
 	}
-	
+
 	public static void cacheDirtyBlock(MongoBlock mb) {
 		dirtyBlockCache.put(mb, mb);
 	}
-	
+
 	public static void removeDirtyBlock(MongoBlock mb) {
 		dirtyBlockCache.invalidate(mb);
 	}
@@ -98,27 +100,27 @@ public class MongoDirectory implements NosqlDirectory {
 	public MongoDirectory(Mongo mongo, String dbname, String indexName) throws MongoException, IOException {
 		this(mongo, dbname, indexName, false, false);
 	}
-	
+
 	public MongoDirectory(Mongo mongo, String dbname, String indexName, boolean sharded, boolean compressed) throws MongoException, IOException {
 		this(mongo, dbname, indexName, sharded, compressed, DEFAULT_BLOCK_SIZE);
 	}
-	
+
 	private MongoDirectory(Mongo mongo, String dbname, String indexName, boolean sharded, boolean compressed, int blockSize) throws MongoException, IOException {
 		this.compressed = compressed;
 		this.mongo = mongo;
 		this.dbname = dbname;
 		this.indexName = indexName;
-		this.sharded = sharded ;
+		this.sharded = sharded;
 		this.blockSize = blockSize;
-		
+
 		getFilesCollection().ensureIndex(FILE_NUMBER);
 		getBlocksCollection().ensureIndex(FILE_NUMBER);
-		
+
 		DBObject indexes = new BasicDBObject();
 		indexes.put(FILE_NUMBER, 1);
 		indexes.put(BLOCK_NUMBER, 1);
 		getBlocksCollection().ensureIndex(indexes);
-		
+
 		if (sharded) {
 			String blockCollectionName = getBlocksCollection().getFullName();
 			DB db = mongo.getDB(MongoConstants.StandardDBs.ADMIN);
@@ -130,72 +132,72 @@ public class MongoDirectory implements NosqlDirectory {
 				System.err.println("Failed to shard <" + blockCollectionName + ">: " + cr.getErrorMessage());
 			}
 		}
-		
+
 		DBObject counter = new BasicDBObject();
 		counter.put(_ID, FILE_COUNTER);
-		
+
 		DBCollection counterCollection = getCounterCollection();
 		if (counterCollection.findOne(counter) == null) {
 			counter.put(COUNTER, 0);
 			counterCollection.insert(counter);
 		}
-		
-		nameToFile = new NameToFile(this) ;
+
+		nameToFile = new NameToFile(this);
 	}
-	
+
 	public String getIndexName() {
 		return indexName;
 	}
-	
+
 	public DBCollection getCounterCollection() {
 		DB db = mongo.getDB(dbname);
 		DBCollection c = db.getCollection(indexName + COUNTER_SUFFIX);
 		return c;
 	}
-	
+
 	public DBCollection getFilesCollection() {
 		DB db = mongo.getDB(dbname);
 		DBCollection c = db.getCollection(indexName + FILES_SUFFIX);
 		return c;
 	}
-	
+
 	public DBCollection getBlocksCollection() {
 		DB db = mongo.getDB(dbname);
 		DBCollection c = db.getCollection(indexName + BLOCKS_SUFFIX);
 		return c;
 	}
-	
+
 	public String[] getFileNames() throws IOException {
-		return nameToFile.getFileNames() ;
+		return nameToFile.getFileNames();
 	}
-	
+
 	public MongoFile getFileHandle(String fileName) throws IOException {
-		return getFileHandle(fileName, false);
+		MongoFile result = getFileHandle(fileName, false);
+		return result;
 	}
-	
+
 	public MongoFile getFileHandle(String filename, boolean createIfNotFound) throws IOException {
-		
-		MongoFile mfile = nameToFile.get(filename) ;
-		if (mfile != null) return mfile ;
-		
-		
+
+		MongoFile mfile = nameToFile.get(filename);
+		if (mfile != null)
+			return mfile;
+
 		DBCollection c = getFilesCollection();
-		
+
 		DBObject query = new BasicDBObject();
 		query.put(FILE_NAME, filename);
 		DBCursor cur = c.find(query);
-		
+
 		if (cur.hasNext()) {
 			return loadFileFromDBObject(cur.next());
-		}
-		else if (createIfNotFound) {
+		} else if (createIfNotFound) {
 			return createFile(filename);
 		}
-		
+
 		throw new IOException("File not found: " + filename);
-		
+
 	}
-	
+
 	int getNewFileNumber() {
 		DBCollection counterCollection = getCounterCollection();
 		DBObject query = new BasicDBObject();
@@ -208,19 +210,19 @@ public class MongoDirectory implements NosqlDirectory {
 		int count = (Integer) result.get(COUNTER);
 		return count;
 	}
-	
+
 	private MongoFile createFile(String fileName) throws IOException {
-		return nameToFile.createFile(fileName) ;
+		return nameToFile.createFile(fileName);
 	}
-	
+
 	boolean isCompressed() {
 		return compressed;
 	}
 
 	MongoFile loadFileFromDBObject(DBObject dbObject) throws IOException {
-		return nameToFile.loadFileFromDBObject(dbObject) ;
+		return nameToFile.loadFileFromDBObject(dbObject);
 	}
-	
+
 	public static DBObject toDbObject(NosqlFile nosqlFile) throws IOException {
 		try {
 			DBObject dbObject = new BasicDBObject();
@@ -231,76 +233,71 @@ public class MongoDirectory implements NosqlDirectory {
 			dbObject.put(BLOCK_SIZE, nosqlFile.getBlockSize());
 			dbObject.put(COMPRESSED, nosqlFile.isCompressed());
 			return dbObject;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IOException("Unable to serialize file descriptor for " + nosqlFile.getFileName() + e.getMessage());
 		}
 	}
-	
+
 	public int getBlockSize() {
 		return blockSize;
 	}
-	
+
 	public void updateFileMetadata(NosqlFile nosqlFile) throws IOException {
-		
+
 		DBCollection c = getFilesCollection();
-		
+
 		DBObject query = new BasicDBObject();
 		query.put(FILE_NUMBER, nosqlFile.getFileNumber());
-		
+
 		DBObject object = toDbObject(nosqlFile);
 		c.update(query, object, true, false, WriteConcern.SAFE);
-		
+
 	}
-	
+
 	public void deleteFile(NosqlFile nosqlFile) throws IOException {
 		DBCollection c = getFilesCollection();
-		
+
 		DBObject query = new BasicDBObject();
 		query.put(FILE_NUMBER, nosqlFile.getFileNumber());
 		c.remove(query);
-		
+
 		DBCollection b = getBlocksCollection();
 		b.remove(query, WriteConcern.SAFE);
 		nameToFile.remove(nosqlFile.getFileName());
 	}
-	
+
 	@Override
 	public String toString() {
 		return "MongoDirectory [dbname=" + dbname + ", indexName=" + indexName + ", blockSize=" + blockSize + "]";
 	}
 
 	public NosqlDirectory ifModified() throws IOException {
-		
-		
-		
-		if (nameToFile.isAllMatchFile()) return this ;
-		
-		Debug.line("isModified") ;
-		return new MongoDirectory(mongo, dbname, indexName, this.sharded, this.compressed, this.blockSize) ;
+		if (nameToFile.isAllMatchFile()) {
+			return this;
+		} else {
+			
+			return new MongoDirectory(mongo, dbname, indexName, this.sharded, this.compressed, this.blockSize);
+		}
 	}
 	
+	public NosqlDirectory newDir() throws MongoException, IOException{
+		dirtyBlockCache.invalidateAll() ;
+//		nameToFile = new NameToFile(this);
+		return this;
+	}
+	
+
 }
 
-
-//class ReOpenFile {
-//	
-//	public void run(){
-//		if (isModified()){
-//			reopenMongoFileMap() ;
-//		}
-//	}
-//}
-
-
 class NameToFile {
-	
+
 	private ConcurrentHashMap<String, MongoFile> nameToFileMap = new ConcurrentHashMap<String, MongoFile>();
 
-	private MongoDirectory mdir ;
+	private MongoDirectory mdir;
+
 	NameToFile(MongoDirectory mdir) throws MongoException, IOException {
-		this.mdir = mdir ;
-		fetchInitialContents() ;
+		this.mdir = mdir;
+		fetchInitialContents();
 	}
 
 	void put(MongoFile mfile) throws MongoException, IOException {
@@ -308,65 +305,65 @@ class NameToFile {
 	}
 
 	void remove(String fileName) {
-		nameToFileMap.remove(fileName) ;
+		nameToFileMap.remove(fileName);
 	}
 
 	void putIfAbsent(MongoFile mongoFile) {
-		nameToFileMap.putIfAbsent(mongoFile.getFileName(), mongoFile) ;
+		nameToFileMap.putIfAbsent(mongoFile.getFileName(), mongoFile);
 	}
 
 	MongoFile get(String filename) {
 		return nameToFileMap.get(filename);
 	}
-	
-	boolean isAllMatchFile() throws MongoException, IOException{
-		List<MongoFile> newFileList = fetchFileList() ;
+
+	boolean isAllMatchFile() throws MongoException, IOException {
+		List<MongoFile> newFileList = fetchFileList();
 		boolean result = new HashSet<MongoFile>(nameToFileMap.values()).equals(new HashSet<MongoFile>(newFileList));
-		
-		return result ;
+
+		return result;
 	}
 
 	String[] getFileNames() throws IOException {
-//		nameToFileMap.clear();
-//		fetchInitialContents() ;
+		// nameToFileMap.clear();
+		// fetchInitialContents() ;
 		return nameToFileMap.keySet().toArray(new String[0]);
 	}
-	
+
 	MongoFile loadFileFromDBObject(DBObject dbObject) throws IOException {
 		MongoFile mongoFile = fromDbObject(dbObject);
 		putIfAbsent(mongoFile);
 		return get(mongoFile.getFileName());
 	}
-	
+
 	MongoFile createFile(String fileName) throws IOException {
 		MongoFile mongoFile = new MongoFile(mdir, fileName, mdir.getNewFileNumber(), mdir.getBlockSize(), mdir.isCompressed());
 		mdir.updateFileMetadata(mongoFile);
-		
+
 		putIfAbsent(mongoFile);
 		return get(mongoFile.getFileName());
 	}
 
-	List<MongoFile> fetchFileList() throws MongoException, IOException{
-		List<MongoFile> result = ListUtil.newList() ;
+	List<MongoFile> fetchFileList() throws MongoException, IOException {
+		List<MongoFile> result = ListUtil.newList();
 		DBCollection c = mdir.getFilesCollection();
 		DBObject query = new BasicDBObject();
-		
+
 		DBCursor cursor = c.find(query);
-		
+
 		while (cursor.hasNext()) {
 			MongoFile mf = loadFileFromDBObject(cursor.next());
-			result.add(mf) ;
+			result.add(mf);
 		}
-		
+
 		try {
-			Thread.sleep(30) ;
+			Thread.sleep(30);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-		cursor.close() ;
-		return result ;
+		cursor.close();
+		return result;
 	}
-	
+
 	private void fetchInitialContents() throws MongoException, IOException {
 		for (MongoFile mf : fetchFileList()) {
 			nameToFileMap.put(mf.getFileName(), mf);
@@ -379,14 +376,10 @@ class NameToFile {
 			mongoFile.setFileLength((Long) dbObject.get(mdir.LENGTH));
 			mongoFile.setLastModified((Long) dbObject.get(mdir.LAST_MODIFIED));
 			return mongoFile;
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IOException("Unable to de-serialize file descriptor from: <" + dbObject + ">: " + e.getMessage());
-			
+
 		}
 	}
 
 }
-
-
-

@@ -58,6 +58,7 @@ public class SearchRepositoryCentral implements RCentral {
 	}
 
 	public void unload() {
+		central.destroySelf() ;
 		if (mongo != null) mongo.close();
 	}
 

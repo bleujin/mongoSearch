@@ -61,6 +61,25 @@ public class TestSearchSession extends TestBaseSearch{
 		assertEquals(1, session.createSearchQuery().term("name", "jin").find().getTotalCount()) ; 
 	}
 	
+	public void testOppsCommit() throws Exception {
+		session.dropWorkspace() ;
+		session.newNode().put("name", "bleujin").getSession().
+			newNode().put("name", "jin").getSession().commit() ;
+		session.waitForFlushed() ;
+
+		session.createQuery().eq("name", "jin").remove() ;
+		session.commit() ;
+		session.waitForFlushed() ;
+		
+		SearchSession otherSession = rc.login("search", "mywork") ;
+		otherSession.waitForFlushed() ;
+//		otherSession.commit() ;
+		
+		
+		Debug.line(otherSession.createSearchQuery().find().getTotalCount()) ;
+		
+	}
+	
 	
 	public void testIndexInfo() throws Exception {
 

@@ -9,12 +9,13 @@ import net.ion.radon.repository.Session;
 public class TestBaseSearch extends TestCase{
 
 
+	protected SearchRepositoryCentral rc ;
 	protected Session old ;
 	protected SearchSession session ;
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		SearchRepositoryCentral rc = SearchRepositoryCentral.testCreate() ;
+		rc = SearchRepositoryCentral.testCreate() ;
 		session = rc.login("search", "mywork") ;
 		
 		RepositoryCentral mrc = RepositoryCentral.testCreate() ;

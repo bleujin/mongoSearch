@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import net.ion.framework.util.Debug;
 import net.ion.isearcher.indexer.storage.mongo.Compression.CompressionLevel;
 
 import com.google.common.cache.Cache;
@@ -88,8 +89,8 @@ public class MongoFile implements NosqlFile {
 				}
 				
 				Lock l = blockLocks.get(key);
-				l.lock();
 				try {
+					l.lock();
 					MongoBlock mb = dirtyBlocks.getIfPresent(key);
 					if (mb != null) {
 						return mb;
@@ -108,9 +109,7 @@ public class MongoFile implements NosqlFile {
 		};
 		
 		this.dirtyBlocks = CacheBuilder.newBuilder().removalListener(removalListener).softValues().build();
-		
 		this.cache = CacheBuilder.newBuilder().softValues().build(cacheLoader);
-		
 	}
 	
 	public MongoDirectory getMongoDirectory() {
