@@ -25,7 +25,7 @@ public class ReplCacheTest extends TestCase {
 		cm.start() ;
 		
 		Cache<Object, Object> cache = cm.getCache("workspace");
-		
+		cache.addListener(new SampleListener());
 		while(true){
 			cache.put("date", "hero " + new Date()) ;
 			Thread.sleep(800) ;

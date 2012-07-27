@@ -48,8 +48,8 @@
          oob_thread_pool.rejection_policy="discard"/>
 
    <MPING timeout="2000"
-    mcast_addr="228.8.8.8"
-    mcast_port="7500"
+    mcast_addr="228.1.2.3"
+    mcast_port="45566"
     ip_ttl="8"
     num_initial_members="3"/>
 
