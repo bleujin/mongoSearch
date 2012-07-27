@@ -27,15 +27,15 @@ public class ReplCacheTest extends TestCase {
 		Cache<Object, Object> cache = cm.getCache("workspace");
 		
 		while(true){
-			cache.put("date", new Date()) ;
-			Thread.sleep(1000) ;
+			cache.put("date", "hero " + new Date()) ;
+			Thread.sleep(800) ;
 		}
 	}
 	
 	public void testGetter() throws Exception {
 		DefaultCacheManager cacheManager = new DefaultCacheManager(
 			      GlobalConfigurationBuilder.defaultClusteredBuilder()
-			         .transport().addProperty("configurationFile", "etc/config-samples/jgroups-tcp.xml")
+			         .transport().addProperty("configurationFile", "resource/config/jgroups-tcp.xml")
 			         .build(),
 			      new ConfigurationBuilder()
 			         .clustering().cacheMode(CacheMode.REPL_SYNC)
@@ -47,7 +47,7 @@ public class ReplCacheTest extends TestCase {
 			Cache<Object, Object> cache = cacheManager.getCache("workspace");
 
 			System.out.println(cache.get("date"));
-			Thread.sleep(1000);
+			Thread.sleep(900);
 		}
 
 	}
