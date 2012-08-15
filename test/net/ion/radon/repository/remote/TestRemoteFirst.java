@@ -31,7 +31,7 @@ public class TestRemoteFirst extends TestCase{
 	@Override protected void setUp() throws Exception {
 		super.setUp() ;
 		RepositoryCentral rc = RepositoryCentral.testCreate() ;
-		this.aradon = new Aradon() ;
+		this.aradon = Aradon.create() ;
 		RemoteClient.attachSection(aradon, rc) ;
 		
 		this.aradon.startServer(9000) ;

@@ -30,7 +30,7 @@ public class TestBaseRemote extends TestCase {
 		super.setUp();
 		this.rc = RepositoryCentral.testCreate();
 
-		this.aradon = new Aradon();
+		this.aradon = Aradon.create() ;
 		RemoteClient.attachSection(aradon, rc);
 		this.aradon.startServer(9000);
 		// AradonClient ac = AradonClientFactory.create("http://localhost:9000") ;
@@ -54,7 +54,7 @@ public class TestBaseRemote extends TestCase {
 			protected void setUp() throws Exception {
 				rc = RepositoryCentral.testCreate();
 
-				aradon = new Aradon();
+				aradon = Aradon.create() ;
 				RemoteClient.attachSection(aradon, rc);
 				aradon.startServer(9000);
 				rrc = RemoteRepositoryCentral.create("http://localhost:9000");

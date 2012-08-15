@@ -5,7 +5,6 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="lib" path="lib/iframework_2.3.jar"/>
 	<classpathentry kind="lib" path="lib/isearcher_2.2.jar"/>
-	<classpathentry kind="lib" path="lib/aradon_0.7.jar"/>
 	<classpathentry kind="lib" path="lib/mongonode_0.3.jar"/>
 	<classpathentry kind="lib" path="lib/rest_fat.jar"/>
 	<classpathentry kind="lib" path="lib/search36_fat.jar"/>
@@ -15,6 +14,7 @@
 	<classpathentry kind="lib" path="lib/aclient_0.1.jar"/>
 	<classpathentry kind="lib" path="lib/mongo-2.8.0.jar"/>
 	<classpathentry kind="lib" path="lib/netty-3.2.7.Final.jar"/>
+	<classpathentry kind="lib" path="lib/aradon_0.8.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/jdk5_22"/>
 	<classpathentry kind="output" path="bin"/>
