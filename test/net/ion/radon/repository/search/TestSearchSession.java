@@ -3,10 +3,6 @@ package net.ion.radon.repository.search;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.Future;
-
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.queryParser.ParseException;
 
 import net.ion.framework.util.CaseInsensitiveHashMap;
 import net.ion.framework.util.DateFormatUtil;
@@ -15,6 +11,9 @@ import net.ion.isearcher.impl.Central;
 import net.ion.radon.repository.IndexInfoHandler;
 import net.ion.radon.repository.PropertyQuery;
 import net.ion.radon.repository.SearchSession;
+
+import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.queryParser.ParseException;
 
 public class TestSearchSession extends TestBaseSearch{
 
@@ -53,8 +52,8 @@ public class TestSearchSession extends TestBaseSearch{
 		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().getTotalCount()) ; // not applied
 		assertEquals(1, session.createSearchQuery().term("name", "jin").find().getTotalCount()) ;
 		
-		Future<Integer> future = session.resyncIndex(PropertyQuery.create().eq("name", "hero")) ;
-		assertTrue(future.get().equals(1)) ;
+		int future = session.resyncIndex(PropertyQuery.create().eq("name", "hero")) ;
+		assertTrue(future == 1 ) ;
 		
 		assertEquals(0, session.createSearchQuery().term("name", "bleujin").find().getTotalCount()) ; 
 		assertEquals(1, session.createSearchQuery().term("name", "hero").find().getTotalCount()) ; 

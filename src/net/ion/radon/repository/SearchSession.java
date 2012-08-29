@@ -3,24 +3,25 @@ package net.ion.radon.repository;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Future;
 
-import net.ion.framework.util.CaseInsensitiveHashMap;
-import net.ion.framework.util.DateFormatUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.isearcher.common.MyDocument;
 import net.ion.isearcher.impl.Central;
 import net.ion.isearcher.impl.JobEntry;
 import net.ion.isearcher.indexer.write.IWriter;
+import net.ion.radon.core.PageBean;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.index.IndexReader;
+import org.apache.lucene.index.Term;
+import org.apache.lucene.search.Query;
+import org.apache.lucene.search.TermQuery;
 
 public class SearchSession implements Session {
-
+	private final static int DEFAULT_RESYNC_INTERVAL = 1000;
+	
 	private Session inner;
 	private Central central ;
 	private Analyzer analyzer;
@@ -154,10 +155,61 @@ public class SearchSession implements Session {
 		return SearchQuery.create(this);
 	}
 
-	public Future<Integer> resyncIndex(PropertyQuery definedQuery) {
-		final NodeCursor nc = inner.createQuery(definedQuery).find() ;
-		
-		return addJobEntry(new JobEntry<Integer>() {
+	public int resyncIndex() {
+		return resyncIndex(DEFAULT_RESYNC_INTERVAL);
+	}
+
+	public int resyncIndex(int interval) {
+		deleteQuery(new TermQuery(new Term(NodeConstants.WSNAME, inner.getCurrentWorkspace().getName())));
+		waitForFlushed();
+		return resyncIndex(PropertyQuery.create(), interval);
+	}
+	
+	public int resyncIndex(PropertyQuery definedQuery) {
+		return resyncIndex(definedQuery, DEFAULT_RESYNC_INTERVAL);
+	}
+
+	public int resyncIndex(PropertyQuery definedQuery, int interval) {
+		int totalCnt = inner.createQuery(definedQuery).count();
+		int result = 0;
+		System.out.print("#resyncIndex Start..\n");
+
+		for (int i = 1, last = ((totalCnt / interval) + 1); i <= last; i++) {
+
+			final List<Node> nodeList = inner.createQuery(definedQuery).find(PageBean.create(interval, i));
+			Future<Integer> fu = addJobEntry(new JobEntry<Integer>() {
+
+				@Override
+				public Analyzer getAnalyzer() {
+					return analyzer;
+				}
+
+				@Override
+				public Integer handle(IWriter writer) throws IOException {
+					int result = 0;
+					for (Node node : nodeList) {
+						MyDocument doc = SearchWorkspace.createDocument(node);
+						doc.setIgnoreBodyField(ignoreBodyField);
+						writer.updateDocument(doc);
+						result++;
+					}
+					return result;
+				}
+			});
+			try {
+				result += fu.get();
+				System.out.print("#resyncIndexing(" + result + ")\n");
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		System.out.print("#resyncIndex End(" + result + ")\n");
+		return result;
+	}
+
+	private void deleteQuery(final Query query) {
+		addJobEntry(new JobEntry<Integer>() {
 
 			@Override
 			public Analyzer getAnalyzer() {
@@ -165,19 +217,14 @@ public class SearchSession implements Session {
 			}
 
 			@Override
-			public Integer handle(IWriter writer) throws IOException {
-				int result = 0 ;
-				while (nc.hasNext()){
-					MyDocument doc = SearchWorkspace.createDocument(nc.next()) ;
-					doc.setIgnoreBodyField(ignoreBodyField);
-					writer.updateDocument(doc) ;
-					result++ ;
-				}
-				return result;
+			public Boolean handle(IWriter writer) throws IOException {
+				writer.deleteQuery(query);
+				return true;
 			}
-		}) ;
-	}
+		});
 
+	}
+	
 	public void addIgnoreBodyField(String... ignoreBodyFields) {
 		for(String ignoreField : ignoreBodyFields) {
 			if(!ignoreBodyField.contains(ignoreBodyField)){

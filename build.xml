@@ -71,6 +71,8 @@
 	<target name="copy_novision" depends="publish">
 		<echo>Copy to ICS6</echo>
 		<copy file="publish/mongosearch_${version.number}.${build.number}.jar" todir="../../workspace/ICS6/ics/WEB-INF/lib/" />
+		<echo>Copy to ICS6Extend Dynamic</echo>
+		<copy file="publish/mongosearch_${version.number}.${build.number}.jar" todir="../../workspace/ICS6Extend/lib/dynamic/" />
 		<echo>Copy to ICSS6</echo>
 		<copy file="publish/mongosearch_${version.number}.${build.number}.jar" todir="../../workspace/ICSS6/icss/WEB-INF/lib/" />
 		<echo>Copy to ICSS6Extend</echo>
