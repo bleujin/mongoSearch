@@ -21,6 +21,7 @@ import net.ion.isearcher.searcher.filter.FilterUtil;
 import net.ion.isearcher.searcher.filter.MatchAllDocsFilter;
 import net.ion.isearcher.searcher.filter.TermFilter;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.DocIdSet;
@@ -192,12 +193,11 @@ public class SearchQuery implements Serializable {
 
 		return searcher.search(request);
 	}
-
+    
 	public SearchQuery inAllWorkspace() {
 		this.wsnameFilter = MatchAllDocsFilter.SELF ;
 		return this;
 	}
-
 	
 	private String makeSortExpression() {
 		return StringUtil.join(sorts, ", ");
