@@ -13,6 +13,7 @@ import net.ion.isearcher.impl.Central;
 import net.ion.isearcher.impl.JobEntry;
 import net.ion.isearcher.indexer.write.IWriter;
 import net.ion.radon.core.PageBean;
+import net.ion.radon.repository.collection.CollectionFactory;
 
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
@@ -281,5 +282,9 @@ public class SearchSession implements Session {
 
 	public <T> T getIndexInfo(IndexInfoHandler<T> indexInfo) {
 		return indexInfo.handle(this, getCentral());
+	}
+
+	public CollectionFactory newCollectionFactory(String arg0) {
+		throw new UnsupportedOperationException("newCollectionFactory") ;
 	}
 }

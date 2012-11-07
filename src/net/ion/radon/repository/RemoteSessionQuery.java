@@ -478,4 +478,14 @@ class RemoteCursor implements NodeCursor {
 		session.setAttribute(Explain.class.getCanonicalName(), explain) ;
 		return NodeListCursor.create(session, query, nodes) ;
 	}
+
+
+	public NodeCursor hint(String val) {
+		return createReal().hint(val);
+	}
+
+
+	public NodeCursor hint(IPropertyFamily val) {
+		return createReal().hint(val);
+	}
 }

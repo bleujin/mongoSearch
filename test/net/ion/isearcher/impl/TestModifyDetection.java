@@ -186,7 +186,6 @@ public class TestModifyDetection extends TestCase {
 			ISearcher searcher = cen.newSearcher();
 			searcher.reopen();
 
-			Debug.line('#', searcher.getIndexSearcher());
 			Debug.line('?', cen.getIndexReader());
 
 			searcher.searchTest("bleujin").debugPrint(Page.ALL);

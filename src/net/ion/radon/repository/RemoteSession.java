@@ -8,6 +8,7 @@ import java.util.Map.Entry;
 
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
+import net.ion.radon.repository.collection.CollectionFactory;
 
 public class RemoteSession implements Session, Serializable{
 
@@ -190,6 +191,10 @@ public class RemoteSession implements Session, Serializable{
 
 	public Workspace getWorkspace(String wname, WorkspaceOption myoption) {
 		return repository.getWorkspace(wname, myoption);
+	}
+
+	public CollectionFactory newCollectionFactory(String arg0) {
+		throw new UnsupportedOperationException("newCollectionFactory") ;
 	}
 
 
