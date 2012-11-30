@@ -210,6 +210,7 @@ public class SearchSession implements Session {
 			}
 		}
 		report.addInfoLineWithTime("Reindexing End. ( total : " + result + " )");
+		report.setEnded(true);
 		return result;
 	}
 
