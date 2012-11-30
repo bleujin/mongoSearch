@@ -177,7 +177,7 @@ public class SearchSession implements Session {
 	public int resyncIndex(PropertyQuery definedQuery, int interval, ReSuncIndexReport report) {
 		int totalCnt = inner.createQuery(definedQuery).count();
 		int result = 0;
-		report.addInfoLineWithTime("ResyncIndex Start.");
+		report.addInfoLineWithTime("Reindexing Start.");
 
 		for (int i = 1, last = ((totalCnt / interval) + 1); i <= last; i++) {
 
@@ -203,13 +203,13 @@ public class SearchSession implements Session {
 			});
 			try {
 				result += fu.get();
-				report.addInfoLineWithTime("Indexing... ( sum : " + result + " )");
+				report.addInfoLineWithTime("Reindexing... ( sum : " + result + " )");
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		report.addInfoLineWithTime("ResyncIndex End. ( total : " + result + " )");
+		report.addInfoLineWithTime("Reindexing End. ( total : " + result + " )");
 		return result;
 	}
 
