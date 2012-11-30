@@ -157,23 +157,27 @@ public class SearchSession implements Session {
 	}
 
 	public int resyncIndex() {
-		return resyncIndex(DEFAULT_RESYNC_INTERVAL);
+		return resyncIndex(DEFAULT_RESYNC_INTERVAL, ReSuncIndexReport.NONE);
 	}
 
-	public int resyncIndex(int interval) {
+	public int resyncIndex(int interval, ReSuncIndexReport report) {
 		deleteQuery(new TermQuery(new Term(NodeConstants.WSNAME, inner.getCurrentWorkspace().getName())));
 		waitForFlushed();
-		return resyncIndex(PropertyQuery.create(), interval);
+		return resyncIndex(PropertyQuery.create(), interval, report);
 	}
 	
 	public int resyncIndex(PropertyQuery definedQuery) {
-		return resyncIndex(definedQuery, DEFAULT_RESYNC_INTERVAL);
+		return resyncIndex(definedQuery, DEFAULT_RESYNC_INTERVAL, ReSuncIndexReport.NONE);
 	}
 
 	public int resyncIndex(PropertyQuery definedQuery, int interval) {
+		return resyncIndex(definedQuery, interval, ReSuncIndexReport.NONE);
+	}
+	
+	public int resyncIndex(PropertyQuery definedQuery, int interval, ReSuncIndexReport report) {
 		int totalCnt = inner.createQuery(definedQuery).count();
 		int result = 0;
-		System.out.print("#resyncIndex Start..\n");
+		report.addInfoLineWithTime("ResyncIndex Start.");
 
 		for (int i = 1, last = ((totalCnt / interval) + 1); i <= last; i++) {
 
@@ -199,13 +203,13 @@ public class SearchSession implements Session {
 			});
 			try {
 				result += fu.get();
-				System.out.print("#resyncIndexing(" + result + ")\n");
+				report.addInfoLineWithTime("Indexing... ( sum : " + result + " )");
 
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		System.out.print("#resyncIndex End(" + result + ")\n");
+		report.addInfoLineWithTime("ResyncIndex End. ( total : " + result + " )");
 		return result;
 	}
 
