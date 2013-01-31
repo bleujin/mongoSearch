@@ -11,7 +11,7 @@ remote mongo + search mongo
 	protected SearchSession session ;
 	@Override
 	protected void setUp() throws Exception {
-		SearchRepositoryCentral rc = new SearchRepositoryCentral(new Mongo("61.250.201.78"), "test", null, null, CentralConfig.newRam().build()) ;
+		SearchRepositoryCentral rc = new SearchRepositoryCentral(new Mongo("ipaddress"), "test", null, null, CentralConfig.newRam().build()) ;
 		session = rc.login("search", "mywork") ;
 	}
 	
