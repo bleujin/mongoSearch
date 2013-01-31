@@ -1,12 +1,14 @@
 package net.ion.radon.repository.search;
 
+import java.util.concurrent.ExecutionException;
+
 import net.ion.framework.db.Page;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 
 public class TestSearchFind extends TestBaseSearch{
 
-	private void addNode(int index) {
+	private void addNode(int index) throws InterruptedException, ExecutionException {
 		session.createQuery().remove() ;
 		for (int i : ListUtil.rangeNum(index)) {
 			session.newNode().put("name", "bleujin").put("age", 20 + (i *5)).put("index", i).put("text", "hello hero")

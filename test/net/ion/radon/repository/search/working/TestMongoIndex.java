@@ -1,61 +1,51 @@
 package net.ion.radon.repository.search.working;
 
-import java.util.Map;
+import junit.framework.TestCase;
+import net.ion.framework.db.Page;
+import net.ion.framework.util.ListUtil;
+import net.ion.framework.util.RandomUtil;
+import net.ion.nsearcher.Searcher;
+import net.ion.nsearcher.common.MyDocument;
+import net.ion.nsearcher.common.MyField;
+import net.ion.nsearcher.config.Central;
+import net.ion.nsearcher.index.IndexJob;
+import net.ion.nsearcher.index.IndexSession;
+import net.ion.nsearcher.index.Indexer;
+import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
+import net.ion.nsearcher.indexer.storage.mongo.StorageFac;
+import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 
 import org.apache.lucene.store.Directory;
 
-import com.mongodb.Mongo;
-
-import net.ion.framework.db.Page;
-import net.ion.framework.util.ChainMap;
-import net.ion.framework.util.Debug;
-import net.ion.framework.util.ListUtil;
-import net.ion.framework.util.MapUtil;
-import net.ion.framework.util.RandomUtil;
-import net.ion.isearcher.common.MyDocument;
-import net.ion.isearcher.common.MyField;
-import net.ion.isearcher.exception.ISearcerException;
-import net.ion.isearcher.impl.Central;
-import net.ion.isearcher.impl.ISearcher;
-import net.ion.isearcher.indexer.storage.mongo.StorageFac;
-import net.ion.isearcher.indexer.write.IWriter;
-import net.ion.isearcher.searcher.MyKoreanAnalyzer;
-import net.ion.radon.core.PageBean;
-import junit.framework.TestCase;
-
 public class TestMongoIndex extends TestCase {
 
-	private Directory dir ;
 	private Central c;
 
 	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
-		this.dir = StorageFac.createToMongo("61.250.201.78", "itest", "myin");
-		this.c = Central.createOrGet(dir);
+		Directory dir = StorageFac.createToMongo("61.250.201.78", "itest", "myin");
+		this.c = SimpleCentralConfig.create(dir).build() ;
 	}
 	
 	@Override
 	protected void tearDown() throws Exception {
-		c.clearStore() ;
-		dir.close() ;
+		c.close() ;
 		super.tearDown();
 	}
 
 	public void testIndex() throws Exception {
-		IWriter iw = c.newIndexer(new MyKoreanAnalyzer());
-		try {
-			iw.begin("mytest..");
+		Indexer iw = c.newIndexer();
+		iw.index(new MyKoreanAnalyzer(), new IndexJob<Void>(){
 
-			for (int i : ListUtil.rangeNum(100)) {
-				iw.insertDocument(createDoc(i));
+			public Void handle(IndexSession session) throws Exception {
+				for (int i : ListUtil.rangeNum(100)) {
+					session.insertDocument(createDoc(i));
+				}
+				return null;
 			}
-//			iw.optimize();
-			iw.end() ;
-		} finally {
-			// iw.end();
-			iw.close();
-		}
+			
+		});
 	}
 
 	public void testRetry() throws Exception {
@@ -65,7 +55,7 @@ public class TestMongoIndex extends TestCase {
 	}
 	
 	public void testSearch() throws Exception {
-		ISearcher searcher = c.newSearcher();
+		Searcher searcher = c.newSearcher();
 		searcher.searchTest("355").debugPrint(Page.ALL) ;
 	}
 

@@ -5,27 +5,21 @@ import java.util.List;
 import java.util.Map;
 
 import net.ion.framework.util.Closure;
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
-import net.ion.framework.util.ObjectId;
 import net.ion.framework.util.StringUtil;
-import net.ion.isearcher.common.IKeywordField;
-import net.ion.isearcher.common.MyDocument;
-import net.ion.isearcher.common.MyField;
-import net.ion.isearcher.impl.JobEntry;
-import net.ion.isearcher.indexer.write.IWriter;
-import net.ion.isearcher.searcher.filter.TermFilter;
+import net.ion.nsearcher.common.MyDocument;
+import net.ion.nsearcher.common.MyField;
+import net.ion.nsearcher.common.SearchConstant;
+import net.ion.nsearcher.index.IndexJob;
+import net.ion.nsearcher.index.IndexSession;
+import net.ion.nsearcher.search.filter.TermFilter;
 import net.ion.radon.core.PageBean;
-import net.ion.radon.repository.exception.SearchRuntimeException;
 
-import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.search.FilteredQuery;
 import org.apache.lucene.search.MatchAllDocsQuery;
-import org.apache.lucene.search.MultiTermQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.search.spans.TermSpans;
 
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -88,20 +82,13 @@ public class SearchWorkspace extends Workspace {
 		final SearchSession session = (SearchSession) _session;
 
 		if (query.getDBObject().keySet().size() == 0) {
-			JobEntry<Boolean> job = new JobEntry<Boolean>() {
-				public Boolean handle(IWriter writer) throws IOException {
+			IndexJob<Boolean> job = new IndexJob<Boolean>() {
+				public Boolean handle(IndexSession writer) throws IOException {
 					writer.deleteQuery(new TermQuery(new Term(NodeConstants.WSNAME, getRealWorkspace().getName())));
 					return true;
 				}
-				public Analyzer getAnalyzer() {
-					return session.getAnalyzer();
-				}
-
-				public void onException(Throwable ex) {
-					ex.printStackTrace() ;
-				}
 			};
-			session.getCentral().newDaemonHander().addIndexJob(job) ;
+			session.addJobEntry(job) ;
 			
 		} else {
 
@@ -121,19 +108,12 @@ public class SearchWorkspace extends Workspace {
 				ids.clear();
 			}
 			
-			JobEntry<Boolean> job = new JobEntry<Boolean>() {
-				public Boolean handle(IWriter writer) throws IOException {
+			IndexJob<Boolean> job = new IndexJob<Boolean>() {
+				public Boolean handle(IndexSession writer) throws IOException {
 					for (Query query : queries) {
 						writer.deleteQuery(query) ;
 					}
 					return true ;
-				}
-
-				public Analyzer getAnalyzer() {
-					return session.getAnalyzer();
-				}
-				public void onException(Throwable ex) {
-					ex.printStackTrace() ;
 				}
 			};
 			session.addJobEntry(job) ;
@@ -145,11 +125,11 @@ public class SearchWorkspace extends Workspace {
 
 	private Query toQuery(List<String> ids) {
 		if (ids.isEmpty()) {
-			return new TermQuery(new Term(IKeywordField.ISKey, "not_exist")) ;
+			return new TermQuery(new Term(SearchConstant.ISKey, "not_exist")) ;
 		}
 		TermFilter filter = new TermFilter();
 		for (String docId : ids) {
-			filter.addTerm(new Term(IKeywordField.ISKey, docId));
+			filter.addTerm(new Term(SearchConstant.ISKey, docId));
 		}
 		return new FilteredQuery(new MatchAllDocsQuery(), filter);
 	}
@@ -183,20 +163,12 @@ public class SearchWorkspace extends Workspace {
 
 	synchronized void updateIndexOnCommit(final SearchSession session, final Node[] targets) {
 
-		JobEntry<Boolean> commitJob = new JobEntry<Boolean>() {
-			public Boolean handle(IWriter writer) throws IOException {
+		IndexJob<Boolean> commitJob = new IndexJob<Boolean>() {
+			public Boolean handle(IndexSession writer) throws IOException {
 				for (Node node : targets) {
 					writer.updateDocument(createDocument(node));
 				}
 				return true ;
-			}
-
-			public Analyzer getAnalyzer() {
-				return session.getAnalyzer();
-			}
-
-			public void onException(Throwable ex) {
-				ex.printStackTrace() ;
 			}
 		};
 
@@ -223,20 +195,11 @@ public class SearchWorkspace extends Workspace {
 		return result;
 	}
 	private void deleteQuery(final SearchSession session, final Query query) {
-		JobEntry<Boolean> indexJob = new JobEntry<Boolean>() {
-			public Boolean handle(IWriter writer) throws IOException {
+		IndexJob<Boolean> indexJob = new IndexJob<Boolean>() {
+			public Boolean handle(IndexSession writer) throws IOException {
 				writer.deleteQuery(query);
 				return true ;
 			}
-
-			public Analyzer getAnalyzer() {
-				return session.getAnalyzer();
-			}
-
-			public void onException(Throwable ex) {
-				ex.printStackTrace() ;
-			}
-			
 		};
 
 		session.addJobEntry(indexJob);

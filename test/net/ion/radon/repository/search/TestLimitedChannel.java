@@ -1,11 +1,11 @@
 package net.ion.radon.repository.search;
 
+import junit.framework.TestCase;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.isearcher.searcher.processor.LimitedChannel;
-import junit.framework.TestCase;
+import net.ion.nsearcher.search.processor.LimitedChannel;
 
 public class TestLimitedChannel extends TestCase {
 

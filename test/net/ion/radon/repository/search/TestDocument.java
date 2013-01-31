@@ -1,8 +1,6 @@
 package net.ion.radon.repository.search;
 
-import net.ion.framework.util.Debug;
-import net.ion.framework.util.ListUtil;
-import net.ion.isearcher.common.MyDocument;
+import net.ion.nsearcher.common.MyDocument;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.NodeConstants;
 

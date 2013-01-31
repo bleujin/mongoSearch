@@ -12,19 +12,15 @@ import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.isearcher.common.MyDocument;
-import net.ion.isearcher.impl.ISearcher;
-import net.ion.isearcher.searcher.ISearchRequest;
-import net.ion.isearcher.searcher.SearchRequest;
-import net.ion.isearcher.searcher.SearchResponse;
-import net.ion.isearcher.searcher.filter.FilterUtil;
-import net.ion.isearcher.searcher.filter.MatchAllDocsFilter;
-import net.ion.isearcher.searcher.filter.TermFilter;
+import net.ion.nsearcher.Searcher;
+import net.ion.nsearcher.common.MyDocument;
+import net.ion.nsearcher.search.SearchRequest;
+import net.ion.nsearcher.search.SearchResponse;
+import net.ion.nsearcher.search.filter.FilterUtil;
+import net.ion.nsearcher.search.filter.MatchAllDocsFilter;
+import net.ion.nsearcher.search.filter.TermFilter;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
-import org.apache.lucene.search.DocIdSet;
 import org.apache.lucene.search.Filter;
 import org.apache.lucene.search.NumericRangeFilter;
 import org.apache.lucene.search.TermRangeFilter;
@@ -181,10 +177,16 @@ public class SearchQuery implements Serializable {
 	}
 
 	public SearchResponse find(String query) throws IOException, ParseException {
-		ISearcher searcher = session.getCentral().newSearcher();
+		Searcher searcher = session.getCentral().newSearcher();
 
-		ISearchRequest request = SearchRequest.create(query, makeSortExpression(), session.getAnalyzer());
-		request.setPage(page);
+		SearchRequest request = SearchRequest.create(query, null, session.getAnalyzer());
+		request.page(page) ;
+		
+		for (String sort : sorts) {
+			if (sort.endsWith(" asc")) request.ascending(StringUtil.substringBefore(sort, " ")) ;
+			else request.descending(StringUtil.substringBefore(sort, " ")) ;
+		}
+		
 		for (Entry<String, Object> entry : paramMap.entrySet()) {
 			request.setParam(entry.getKey(), entry.getValue());
 		}
@@ -199,10 +201,6 @@ public class SearchQuery implements Serializable {
 		return this;
 	}
 	
-	private String makeSortExpression() {
-		return StringUtil.join(sorts, ", ");
-	}
-
 	public SearchResponse find() throws IOException, ParseException {
 		return find("");
 	}

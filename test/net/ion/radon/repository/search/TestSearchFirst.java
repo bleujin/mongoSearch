@@ -1,7 +1,7 @@
 package net.ion.radon.repository.search;
 
 import junit.framework.TestCase;
-import net.ion.isearcher.common.MyDocument;
+import net.ion.nsearcher.common.MyDocument;
 import net.ion.radon.repository.SearchRepositoryCentral;
 import net.ion.radon.repository.SearchSession;
 

@@ -5,13 +5,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import net.ion.framework.util.MapUtil;
-import net.ion.isearcher.common.MyDocument;
-import net.ion.isearcher.impl.Central;
-import net.ion.isearcher.impl.JobEntry;
-import net.ion.isearcher.indexer.write.IWriter;
+import net.ion.nsearcher.common.MyDocument;
+import net.ion.nsearcher.config.Central;
+import net.ion.nsearcher.index.IndexJob;
+import net.ion.nsearcher.index.IndexSession;
+import net.ion.nsearcher.reader.InfoReader;
 import net.ion.radon.core.PageBean;
 import net.ion.radon.repository.collection.CollectionFactory;
 
@@ -29,6 +31,8 @@ public class SearchSession implements Session {
 	private List<String> ignoreBodyField; 
 	
 	private Map<String, SearchWorkspace> wss = MapUtil.newCaseInsensitiveMap() ;
+
+	private Future<?> lastFutureIndex ;
 	
 	private SearchSession(Session inner, Central central, Analyzer analyzer) {
 		this.inner = inner;
@@ -156,11 +160,11 @@ public class SearchSession implements Session {
 		return SearchQuery.create(this);
 	}
 
-	public int resyncIndex() {
+	public int resyncIndex() throws InterruptedException, ExecutionException {
 		return resyncIndex(DEFAULT_RESYNC_INTERVAL, ReSuncIndexReport.NONE);
 	}
 
-	public int resyncIndex(int interval, ReSuncIndexReport report) {
+	public int resyncIndex(int interval, ReSuncIndexReport report) throws InterruptedException, ExecutionException {
 		deleteQuery(new TermQuery(new Term(NodeConstants.WSNAME, inner.getCurrentWorkspace().getName())));
 		waitForFlushed();
 		return resyncIndex(PropertyQuery.create(), interval, report);
@@ -182,15 +186,9 @@ public class SearchSession implements Session {
 		for (int i = 1, last = ((totalCnt / interval) + 1); i <= last; i++) {
 
 			final List<Node> nodeList = inner.createQuery(definedQuery).find(PageBean.create(interval, i));
-			Future<Integer> fu = addJobEntry(new JobEntry<Integer>() {
+			Future<Integer> fu = addJobEntry(new IndexJob<Integer>() {
 
-				@Override
-				public Analyzer getAnalyzer() {
-					return analyzer;
-				}
-
-				@Override
-				public Integer handle(IWriter writer) throws IOException {
+				public Integer handle(IndexSession writer) throws IOException {
 					int result = 0;
 					for (Node node : nodeList) {
 						MyDocument doc = SearchWorkspace.createDocument(node);
@@ -215,16 +213,9 @@ public class SearchSession implements Session {
 	}
 
 	private void deleteQuery(final Query query) {
-		addJobEntry(new JobEntry<Integer>() {
-
-			@Override
-			public Analyzer getAnalyzer() {
-				return analyzer;
-			}
-
-			@Override
-			public Boolean handle(IWriter writer) throws IOException {
-				writer.deleteQuery(query);
+		addJobEntry(new IndexJob<Boolean>() {
+			public Boolean handle(IndexSession session) throws IOException {
+				session.deleteQuery(query);
 				return true;
 			}
 		});
@@ -273,20 +264,22 @@ public class SearchSession implements Session {
 		return inner;
 	}
 
-	public void waitForFlushed() {
-		central.newDaemonHander().waitForFlushed() ;
+	public void waitForFlushed() throws InterruptedException, ExecutionException {
+		if (lastFutureIndex != null) lastFutureIndex.get() ;
 	}
 
 	Analyzer getAnalyzer() {
 		return analyzer;
 	}
 
-	<T> Future<T> addJobEntry(JobEntry<T> indexJob) {
-		return central.newDaemonHander().addIndexJob(indexJob) ;
+	<T> Future<T> addJobEntry(IndexJob<T> indexJob) {
+		final Future<T> result = central.newIndexer().asyncIndex("msession", this.getAnalyzer(), indexJob);
+		this.lastFutureIndex = result ;
+		return result ;
 	}
 
 	public <T> T getIndexInfo(IndexInfoHandler<T> indexInfo) {
-		return indexInfo.handle(this, getCentral());
+		return indexInfo.handle(this, getCentral().newReader());
 	}
 
 	public CollectionFactory newCollectionFactory(String arg0) {

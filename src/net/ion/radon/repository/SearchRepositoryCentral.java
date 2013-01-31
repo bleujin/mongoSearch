@@ -1,16 +1,13 @@
 package net.ion.radon.repository;
 
 import java.io.IOException;
-import java.util.Map.Entry;
 
-import net.ion.isearcher.impl.Central;
-import net.ion.isearcher.searcher.MyKoreanAnalyzer;
+import net.ion.nsearcher.config.Central;
+import net.ion.nsearcher.config.CentralConfig;
+import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 import net.ion.radon.repository.myapi.ICredential;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.cjk.CJKAnalyzer;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
 
 import com.mongodb.DB;
 import com.mongodb.Mongo;
@@ -23,16 +20,16 @@ public class SearchRepositoryCentral implements RCentral {
 	private String currentDBName = "test";
 	private ICredential credential = SimpleCredential.BLANK;
 	
-	public SearchRepositoryCentral(Mongo mongo, String dbName, String userId, String userPwd, Directory dir) {
+	public SearchRepositoryCentral(Mongo mongo, String dbName, String userId, String userPwd, Central central) {
 		this.mongo = mongo;
 		this.currentDBName = dbName;
 		this.credential = BasicCredential.create(userId, userPwd) ;
-		this.central =  Central.createOrGet(dir);
+		this.central = central ;
 	}
 
 	public static SearchRepositoryCentral testCreate() throws MongoException, IOException {
 		// StorageFac.createToMongo("61.250.201.78", "itest", "myin")
-		return new SearchRepositoryCentral(new Mongo("61.250.201.78"), "test", null, null, new RAMDirectory()) ;
+		return new SearchRepositoryCentral(new Mongo("61.250.201.78"), "test", null, null, CentralConfig.newRam().build()) ;
 	}
 
 	public SearchSession login(String defaultWorkspace) throws IllegalArgumentException {

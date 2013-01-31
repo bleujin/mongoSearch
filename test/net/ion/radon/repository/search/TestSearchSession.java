@@ -7,13 +7,15 @@ import java.util.Map;
 import net.ion.framework.util.CaseInsensitiveHashMap;
 import net.ion.framework.util.DateFormatUtil;
 import net.ion.framework.util.Debug;
-import net.ion.isearcher.impl.Central;
+import net.ion.nsearcher.config.Central;
+import net.ion.nsearcher.reader.InfoReader;
 import net.ion.radon.repository.IndexInfoHandler;
 import net.ion.radon.repository.PropertyQuery;
 import net.ion.radon.repository.SearchSession;
 
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.store.Directory;
 
 public class TestSearchSession extends TestBaseSearch{
 
@@ -86,7 +88,7 @@ public class TestSearchSession extends TestBaseSearch{
 
 
 		int coiunt = session.getIndexInfo(new IndexInfoHandler<Integer>() {
-			public Integer handle(SearchSession session, Central central) {
+			public Integer handle(SearchSession session, InfoReader infoReader) {
 				try {
 					return session.createSearchQuery().find().getTotalCount();
 				} catch (IOException e) {
@@ -102,14 +104,14 @@ public class TestSearchSession extends TestBaseSearch{
 	}
 	
 	static IndexInfoHandler<Map<String, Object>> IndexInfo = new IndexInfoHandler<Map<String, Object>>() {
-		public Map<String, Object> handle(SearchSession session, Central central) {
+		public Map<String, Object> handle(SearchSession session, InfoReader infoReader) {
 			final Map<String, Object> map = new CaseInsensitiveHashMap<Object>();
 			try {
-				IndexReader reader = central.newReader().getIndexReader();
+				final Directory dir = infoReader.getIndexReader().directory();
 				map.put("numDoc", session.createSearchQuery().find().getTotalCount());
-				map.put("allNumDoc", reader.numDocs());
-				map.put("indexPath", central.getDir().toString());
-				map.put("lastModified", DateFormatUtil.date2String(new Date(IndexReader.lastModified(central.getDir())), "yyyy-MM-dd HH:mm:ss"));
+				map.put("allNumDoc", infoReader.numDoc());
+				map.put("indexPath", dir.toString());
+				map.put("lastModified", DateFormatUtil.date2String(new Date(IndexReader.lastModified(dir)), "yyyy-MM-dd HH:mm:ss"));
 			} catch (Exception ex) {
 				map.put("numDoc", 0);
 				map.put("allNumDoc", 0);

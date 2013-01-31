@@ -1,19 +1,14 @@
 package net.ion.radon.repository;
 
-import org.apache.lucene.index.IndexReader;
-import org.apache.lucene.search.IndexSearcher;
-import org.apache.lucene.search.MatchAllDocsQuery;
+import junit.framework.TestCase;
+import net.ion.framework.db.Page;
+import net.ion.nsearcher.config.CentralConfig;
+import net.ion.radon.core.PageBean;
+
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 
-import net.ion.framework.db.Page;
-import net.ion.framework.util.Debug;
-import net.ion.isearcher.searcher.MyKoreanAnalyzer;
-import net.ion.radon.core.PageBean;
-
 import com.mongodb.Mongo;
-
-import junit.framework.TestCase;
 
 public class TestSearchRepositoryCentral extends TestCase {
 
@@ -24,8 +19,7 @@ public class TestSearchRepositoryCentral extends TestCase {
 		String userId = "ics";
 		String userPwd = "ics";
 
-		Directory dir = new RAMDirectory();
-		SearchRepositoryCentral sc = new SearchRepositoryCentral(mongo, dbName, userId, userPwd, dir);
+		SearchRepositoryCentral sc = new SearchRepositoryCentral(mongo, dbName, userId, userPwd, CentralConfig.newRam().build());
 		
 		SearchSession ss = sc.login(dbName, "test") ;
 		ss.dropWorkspace() ;

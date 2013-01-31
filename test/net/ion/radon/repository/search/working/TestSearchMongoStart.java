@@ -1,9 +1,8 @@
 package net.ion.radon.repository.search.working;
 
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
-import net.ion.isearcher.searcher.SearchResponse;
+import net.ion.nsearcher.search.SearchResponse;
 import net.ion.radon.repository.search.TestBaseSearch;
 
 public class TestSearchMongoStart extends TestBaseSearch{

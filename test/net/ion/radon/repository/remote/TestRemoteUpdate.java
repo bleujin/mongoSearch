@@ -2,9 +2,7 @@ package net.ion.radon.repository.remote;
 
 import java.util.Map;
 
-import net.ion.framework.util.Debug;
 import net.ion.framework.util.MapUtil;
-import net.ion.isearcher.common.MyDocument;
 import net.ion.radon.core.PageBean;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.NodeResult;
@@ -72,9 +70,8 @@ public class TestRemoteUpdate extends TestBaseRemote{
 		RemoteSession session = super.remoteLogin() ;
 		
 		session.createQuery().eq("name", "bleujin").overwriteOne(map) ;
-
-		Node found = session.createQuery().id(savedNode.getIdentifier()).findOne();
 		
+		Node found = session.createQuery().id(savedNode.getIdentifier()).findOne();
 		assertEquals("hero", found.getString("name")) ;
 		assertTrue(found.getString("greeting") == null) ;
 		assertTrue(found.getString("address") == null) ;

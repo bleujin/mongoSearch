@@ -2,11 +2,9 @@ package net.ion.radon.repository.search;
 
 import java.util.Map;
 
-import net.ion.framework.db.Page;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.MapUtil;
-import net.ion.isearcher.common.MyDocument;
-import net.ion.radon.core.PageBean;
+import net.ion.nsearcher.common.MyDocument;
 import net.ion.radon.repository.MergeQuery;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.NodeResult;

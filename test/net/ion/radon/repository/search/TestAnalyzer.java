@@ -1,10 +1,11 @@
 package net.ion.radon.repository.search;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 import net.ion.framework.db.Page;
 import net.ion.framework.util.Debug;
-import net.ion.isearcher.common.MyField;
+import net.ion.nsearcher.common.MyField;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.SearchRepositoryCentral;
 
@@ -28,7 +29,7 @@ import com.mongodb.MongoException;
 
 public class TestAnalyzer extends TestBaseSearch{
 
-	public void testCJKSearch() throws MongoException, IOException, ParseException {
+	public void testCJKSearch() throws MongoException, IOException, ParseException, InterruptedException, ExecutionException {
 		SearchRepositoryCentral rc = SearchRepositoryCentral.testCreate() ;
 		session = rc.login("test", new CJKAnalyzer(Version.LUCENE_35));
 		Node node = session.newNode();

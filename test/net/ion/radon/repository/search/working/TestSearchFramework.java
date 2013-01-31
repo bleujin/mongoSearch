@@ -1,30 +1,32 @@
 package net.ion.radon.repository.search.working;
 
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.RAMDirectory;
-
-import net.ion.framework.db.Page;
-import net.ion.framework.util.Debug;
-import net.ion.isearcher.common.MyDocument;
-import net.ion.isearcher.common.MyDocument.Action;
-import net.ion.isearcher.impl.Central;
-import net.ion.isearcher.indexer.write.IWriter;
-import net.ion.isearcher.searcher.MyKoreanAnalyzer;
+import junit.framework.TestCase;
+import net.ion.nsearcher.common.MyDocument;
+import net.ion.nsearcher.common.MyDocument.Action;
+import net.ion.nsearcher.config.Central;
+import net.ion.nsearcher.config.CentralConfig;
+import net.ion.nsearcher.index.IndexJob;
+import net.ion.nsearcher.index.IndexSession;
+import net.ion.nsearcher.index.Indexer;
+import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 import net.ion.radon.core.PageBean;
 import net.ion.radon.repository.RepositoryCentral;
 import net.ion.radon.repository.Session;
-import junit.framework.TestCase;
 
 public class TestSearchFramework extends TestCase{
 
 	
 	public void testUpdateIndex() throws Exception {
-		Central cen = Central.createOrGet(new RAMDirectory()) ;
+		Central cen = CentralConfig.newRam().build() ;
 		
-		IWriter wr = cen.newIndexer(new MyKoreanAnalyzer()) ;
-		wr.begin("test") ;
-		Action action = wr.updateDocument(MyDocument.testDocument().keyword("name", "bleujin")) ;
-		wr.end() ;
+		Indexer wr = cen.newIndexer() ;
+		
+		Action action = wr.index(new MyKoreanAnalyzer(), new IndexJob<Action>(){
+			public Action handle(IndexSession session) throws Exception {
+				Action action = session.updateDocument(MyDocument.testDocument().keyword("name", "bleujin")) ;
+				return action;
+			}
+		}) ;
 		
 		assertEquals(1, cen.newSearcher().searchTest("bleujin").getTotalCount());
 		assertEquals(Action.Update, action) ;
