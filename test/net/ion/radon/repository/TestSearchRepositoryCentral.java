@@ -28,6 +28,6 @@ public class TestSearchRepositoryCentral extends TestCase {
 		ss.createQuery().find().debugPrint(PageBean.ALL) ;
 		
 		ss.waitForFlushed() ;
-		ss.createSearchQuery().find().debugPrint(Page.ALL) ;
+		ss.createSearchQuery().find().debugPrint() ;
 	}
 }

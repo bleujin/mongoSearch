@@ -273,7 +273,7 @@ public class SearchSession implements Session {
 	}
 
 	<T> Future<T> addJobEntry(IndexJob<T> indexJob) {
-		final Future<T> result = central.newIndexer().asyncIndex("msession", this.getAnalyzer(), indexJob);
+		final Future<T> result = central.newIndexer().asyncIndex(this.getAnalyzer(), indexJob);
 		this.lastFutureIndex = result ;
 		return result ;
 	}

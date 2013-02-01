@@ -37,7 +37,7 @@ public class TestAnalyzer extends TestBaseSearch{
 		session.commit();
 		session.waitForFlushed();
 		
-		Debug.line(session.createSearchQuery().find("วร").getTotalCount());
+		Debug.line(session.createSearchQuery().find("วร").totalCount());
 	}
 	
 	public void testSearch() throws Exception {
@@ -46,7 +46,7 @@ public class TestAnalyzer extends TestBaseSearch{
 		session.newNode().put("index", "1").put("age", 20).getSession().commit();
 		
 		session.waitForFlushed();
-		session.createSearchQuery().term("index", "1").find().debugPrint(Page.ALL) ;
+		session.createSearchQuery().term("index", "1").find().debugPrint() ;
 	}
 	
 	public void testLucene() throws Exception {

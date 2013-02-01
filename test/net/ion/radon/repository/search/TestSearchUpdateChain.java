@@ -20,7 +20,7 @@ public class TestSearchUpdateChain extends TestBaseSearch {
 		session.dropWorkspace() ;
 		session.waitForFlushed() ;
 		
-		assertEquals(0, session.createSearchQuery().find().getTotalCount());
+		assertEquals(0, session.createSearchQuery().find().totalCount());
 	}
 	
 	public void testChainUpdate() throws Exception {
@@ -32,8 +32,8 @@ public class TestSearchUpdateChain extends TestBaseSearch {
 		session.waitForFlushed() ;
 
 		assertEquals(1, session.createQuery().eq("name", "hero").find().count());
-		assertEquals(1, session.createSearchQuery().term("name", "hero").find("").getTotalCount());
-		assertEquals(1, session.createSearchQuery().term("ival", "1").find("").getTotalCount());
+		assertEquals(1, session.createSearchQuery().term("name", "hero").find("").totalCount());
+		assertEquals(1, session.createSearchQuery().term("ival", "1").find("").totalCount());
 
 	}
 	
@@ -46,8 +46,8 @@ public class TestSearchUpdateChain extends TestBaseSearch {
 		session.waitForFlushed() ;
 
 		assertEquals(2, session.createQuery().eq("name", "hero").find().count());
-		assertEquals(2, session.createSearchQuery().term("name", "hero").find("").getTotalCount());
-		assertEquals(2, session.createSearchQuery().term("ival", "1").find("").getTotalCount());
+		assertEquals(2, session.createSearchQuery().term("name", "hero").find("").totalCount());
+		assertEquals(2, session.createSearchQuery().term("ival", "1").find("").totalCount());
 	}
 	
 	public void testChainMerge() throws Exception {
@@ -59,7 +59,7 @@ public class TestSearchUpdateChain extends TestBaseSearch {
 		session.waitForFlushed() ;
 
 		assertEquals(1, session.createQuery().eq("name", "hero").find().count());
-		assertEquals(1, session.createSearchQuery().term("name", "hero").find("").getTotalCount());
+		assertEquals(1, session.createSearchQuery().term("name", "hero").find("").totalCount());
 	}
 
 	

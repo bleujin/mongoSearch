@@ -21,7 +21,7 @@ public class TestSearchUpdate extends TestBaseSearch {
 		
 		session.waitForFlushed() ;
 		assertEquals(1, session.createQuery().eq("name", "bleujin").find().count()) ;
-		assertEquals(1, session.createSearchQuery().find().getTotalCount()) ;
+		assertEquals(1, session.createSearchQuery().find().totalCount()) ;
 	}
 	
 	public void testRemoveNode() throws Exception {
@@ -36,7 +36,7 @@ public class TestSearchUpdate extends TestBaseSearch {
 		session.waitForFlushed() ;
 
 		assertEquals(0, session.createQuery().find().count()) ;
-		assertEquals(0, session.createSearchQuery().find().getTotalCount()) ;
+		assertEquals(0, session.createSearchQuery().find().totalCount()) ;
 	}
 	
 	public void testRemoveNode2() throws Exception {
@@ -51,7 +51,7 @@ public class TestSearchUpdate extends TestBaseSearch {
 		session.waitForFlushed() ;
 
 		assertEquals(0, session.createQuery().find().count()) ;
-		assertEquals(0, session.createSearchQuery().find().getTotalCount()) ;
+		assertEquals(0, session.createSearchQuery().find().totalCount()) ;
 	}
 	
 	
@@ -61,13 +61,13 @@ public class TestSearchUpdate extends TestBaseSearch {
 		session.waitForFlushed() ;
 		
 		assertEquals(1, session.createQuery().find().count()) ;
-		assertEquals(1, session.createSearchQuery().find().getTotalCount()) ;
+		assertEquals(1, session.createSearchQuery().find().totalCount()) ;
 
 		session.getCurrentWorkspace().drop() ;
 		session.waitForFlushed() ;
 		
 		assertEquals(0, session.createQuery().find().count()) ;
-		assertEquals(0, session.createSearchQuery().find().getTotalCount()) ;
+		assertEquals(0, session.createSearchQuery().find().totalCount()) ;
 		
 	}
 	

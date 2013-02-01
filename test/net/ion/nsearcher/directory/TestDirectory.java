@@ -7,7 +7,6 @@ import net.ion.framework.db.Page;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ListUtil;
 import net.ion.nsearcher.ISTestCase;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
@@ -16,6 +15,7 @@ import net.ion.nsearcher.index.IndexJob;
 import net.ion.nsearcher.index.IndexSession;
 import net.ion.nsearcher.index.Indexer;
 import net.ion.nsearcher.search.SearchRequest;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 import net.ion.nsearcher.search.processor.StdOutProcessor;
 
@@ -47,7 +47,7 @@ public class TestDirectory extends ISTestCase{
 			}
 		}) ;
 		
-		assertEquals(10, ct.newSearcher().searchTest("").getTotalCount()) ;
+		assertEquals(10, ct.newSearcher().search("").totalCount()) ;
 	}
 	
 	
@@ -70,7 +70,7 @@ public class TestDirectory extends ISTestCase{
 			}
 		}) ;
 		
-		cs.newSearcher().searchTest("").debugPrint(Page.ALL) ;
+		cs.newSearcher().search("").debugPrint() ;
 		Debug.line() ;
 
 		for (int i = 0; i < docs.length; i++) {
@@ -78,7 +78,7 @@ public class TestDirectory extends ISTestCase{
 		}
 		
 		addDocTo(cs, docs, analyzer);
-		cs.newSearcher().searchTest("").debugPrint(Page.ALL) ;
+		cs.newSearcher().search("").debugPrint() ;
 		Debug.line() ;
 
 		
@@ -88,7 +88,7 @@ public class TestDirectory extends ISTestCase{
 				return null;
 			}
 		}) ;
-		ct.newSearcher().searchTest("").debugPrint(Page.ALL) ;
+		ct.newSearcher().search("").debugPrint() ;
 	}
 	
 
@@ -98,8 +98,7 @@ public class TestDirectory extends ISTestCase{
 
 		Searcher searcher = cen1.newSearcher() ;
 		searcher.addPostListener(new StdOutProcessor()) ;
-		SearchRequest req = SearchRequest.create("bleujin") ;
-		assertEquals(6, searcher.search(req).getTotalCount()) ;
+		assertEquals(6, searcher.createRequest("bleujin").find().totalCount()) ;
 
 		cen1.newIndexer().index(new MyKoreanAnalyzer(), new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
@@ -109,20 +108,18 @@ public class TestDirectory extends ISTestCase{
 		}) ;
 		
 		searcher = cen1.newSearcher() ;
-		searcher.searchTest("").debugPrint(Page.ALL) ;
+		searcher.search("").debugPrint() ;
 		
-		assertEquals(9, searcher.search(req).getTotalCount()) ;
+		assertEquals(9, searcher.createRequest("bleujin").find().totalCount()) ;
 		
 		searcher = cen1.newSearcher() ;
 		searcher.addPostListener(new StdOutProcessor()) ;
-		req = SearchRequest.create("bleujin") ;
-		assertEquals(9, searcher.search(req).getTotalCount()) ;
+		assertEquals(9, searcher.createRequest("bleujin").find().totalCount()) ;
 		
 		
 		searcher = cen2.newSearcher() ;
 		searcher.addPostListener(new StdOutProcessor()) ;
-		req = SearchRequest.create("bleujin") ;
-		assertEquals(3, searcher.search(req).getTotalCount()) ;
+		assertEquals(3, searcher.createRequest("bleujin").find().totalCount()) ;
 	}
 
 
@@ -189,7 +186,7 @@ public class TestDirectory extends ISTestCase{
 		}) ;
 		
 		Searcher searcher = cen.newSearcher() ;
-		assertEquals(2, searcher.searchTest("").getTotalCount()) ;
+		assertEquals(2, searcher.createRequest("").find().totalCount()) ;
 	}
 	
 }

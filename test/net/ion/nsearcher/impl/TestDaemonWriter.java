@@ -10,7 +10,6 @@ import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
@@ -20,6 +19,7 @@ import net.ion.nsearcher.index.IndexSession;
 import net.ion.nsearcher.index.Indexer;
 import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
 import net.ion.nsearcher.indexer.storage.mongo.StorageFac;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 
 import org.apache.lucene.store.Directory;
@@ -33,7 +33,7 @@ public class TestDaemonWriter extends TestCase {
 		Indexer wr1 = c.newIndexer();
 		Indexer wr2 = c.newIndexer();
 
-		Future<Void> f1 = wr1.asyncIndex("wr1", new MyKoreanAnalyzer(), new IndexJob<Void>() {
+		Future<Void> f1 = wr1.asyncIndex(new MyKoreanAnalyzer(), new IndexJob<Void>() {
 
 			public Void handle(IndexSession session) throws Exception {
 				String[] names = new String[] { "bleujin", "jin", "hero" };
@@ -58,12 +58,12 @@ public class TestDaemonWriter extends TestCase {
 		f2.get() ;
 		
 		Searcher searcher = c.newSearcher();
-		assertEquals(1, searcher.searchTest("jini").getTotalCount());
+		assertEquals(1, searcher.search("jini").totalCount());
 		
 		f1.get() ;
 
 		searcher = c.newSearcher();
-		assertEquals(11, searcher.searchTest("").getTotalCount());
+		assertEquals(11, searcher.search("").totalCount());
 	}
 
 	
@@ -77,11 +77,11 @@ public class TestDaemonWriter extends TestCase {
 			}
 		} ;
 		
-		Future<Boolean> future = c.newIndexer().asyncIndex("", new MyKoreanAnalyzer(), job);
+		Future<Boolean> future = c.newIndexer().asyncIndex(new MyKoreanAnalyzer(), job);
 		future.get() ;
 		
 		Searcher searcher = c.newSearcher();
-		assertEquals(1, searcher.searchTest("").getTotalCount());
+		assertEquals(1, searcher.search("").totalCount());
 	}
 	
 	
@@ -128,8 +128,8 @@ public class TestDaemonWriter extends TestCase {
 		}) ;
 
 		Searcher searcher = c.newSearcher() ;
-		searcher.searchTest("").debugPrint(Page.ALL) ;
-		assertEquals(100, searcher.searchTest("").getTotalCount()) ;
+		searcher.search("").debugPrint() ;
+		assertEquals(100, searcher.search("").totalCount()) ;
 	}
 	
 	

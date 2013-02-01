@@ -2,7 +2,6 @@ package net.ion.nsearcher.directory;
 
 import junit.framework.TestCase;
 import net.ion.framework.db.Page;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
@@ -12,6 +11,7 @@ import net.ion.nsearcher.index.Indexer;
 import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
 import net.ion.nsearcher.indexer.storage.mongo.StorageFac;
 import net.ion.nsearcher.search.SearchRequest;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 
 import org.apache.lucene.analysis.kr.KoreanAnalyzer;
@@ -61,7 +61,7 @@ public class TestMongoSegment extends TestCase {
 		KoreanAnalyzer analyzer = new KoreanAnalyzer();
 		for (int i = 0; i < 30 ; i++) {
 			final int idx = i ;
-			writer.asyncIndex("", analyzer, new IndexJob<Void>() {
+			writer.asyncIndex(analyzer, new IndexJob<Void>() {
 				public Void handle(IndexSession session) throws Exception {
 					MyDocument doc = MyDocument.testDocument().add(MyField.keyword("name", "bleujin")).add(MyField.number("index", idx));
 					session.insertDocument(doc) ;
@@ -80,7 +80,7 @@ public class TestMongoSegment extends TestCase {
 		KoreanAnalyzer analyzer = new KoreanAnalyzer();
 		for (int i = 0; i < 30 ; i++) {
 			final int idx = i ;
-			writer.asyncIndex("dd", analyzer, new IndexJob<Void>() {
+			writer.asyncIndex(analyzer, new IndexJob<Void>() {
 				public Void handle(IndexSession session) throws Exception {
 					MyDocument doc = MyDocument.testDocument().add(MyField.keyword("name", "bleujin")).add(MyField.number("index", idx));
 					session.insertDocument(doc) ;
@@ -93,10 +93,7 @@ public class TestMongoSegment extends TestCase {
 	public void xtestSearch() throws Exception {
 		Directory dir = StorageFac.createToMongo("61.250.201.78", "search", "seg");
 		Central c = SimpleCentralConfig.createCentral(dir) ;
-		Searcher search = c.newSearcher() ;
-		SearchRequest req = SearchRequest.create("", null, new MyKoreanAnalyzer()) ;
-		req.page(Page.ALL) ;
-		search.search(req).debugPrint(Page.ALL) ;
+		c.newSearcher().createRequest("").page(Page.ALL).find().debugPrint() ;
 	}
 	
 	

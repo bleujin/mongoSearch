@@ -12,7 +12,6 @@ import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.InfinityThread;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
@@ -23,6 +22,7 @@ import net.ion.nsearcher.indexer.storage.mongo.DistributedDirectory;
 import net.ion.nsearcher.indexer.storage.mongo.MongoDirectory;
 import net.ion.nsearcher.indexer.storage.mongo.RefreshStrategy;
 import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 import net.ion.radon.repository.SearchRepositoryCentral;
 import net.ion.radon.repository.SearchSession;
@@ -70,13 +70,13 @@ public class TestBigIndex extends TestCase {
 
 		// Debug.line(session.createSearchQuery().term("index", "333").find().getTotalCount()) ;
 		Searcher searcher = mycen.newSearcher();
-		Debug.line(searcher.searchTest("index:333").getTotalCount());
+		Debug.line(searcher.search("index:333").totalCount());
 	}
 
 	public void testSearch() throws Exception {
 		Searcher searcher = mycen.newSearcher();
 		for (int i = 0; i < 10; i++) {
-			searcher.searchTest("index:" + RandomUtil.nextInt(1000)) ;
+			searcher.search("index:" + RandomUtil.nextInt(1000)) ;
 			Debug.line(System.currentTimeMillis()) ;
 		}
 		
@@ -100,7 +100,7 @@ public class TestBigIndex extends TestCase {
 				try {
 					Debug.line("Searched Completed");
 					Searcher searcher = mycen.newSearcher();
-					searcher.searchTest("index:" + RandomUtil.nextInt(1000)).getTotalCount();
+					searcher.search("index:" + RandomUtil.nextInt(1000)).totalCount();
 					Thread.sleep(50);
 				} catch (Throwable th) {
 					th.printStackTrace() ;

@@ -13,7 +13,6 @@ import net.ion.framework.util.Debug;
 import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
@@ -22,6 +21,7 @@ import net.ion.nsearcher.index.IndexSession;
 import net.ion.nsearcher.index.Indexer;
 import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
 import net.ion.nsearcher.indexer.storage.mongo.StorageFac;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.radon.repository.RepositoryCentral;
 import net.ion.radon.repository.Session;
 import net.ion.radon.repository.WorkspaceOption;
@@ -59,7 +59,7 @@ public class TestMongoBig extends TestCase {
 		Central c = SimpleCentralConfig.createCentral(dir);
 
 		Searcher searcher = c.newSearcher();
-		searcher.searchTest("iyaa").debugPrint(Page.TEN);
+		searcher.search("iyaa").debugPrint();
 
 		c.destroySelf();
 	}
@@ -91,7 +91,7 @@ public class TestMongoBig extends TestCase {
 		Central c = SimpleCentralConfig.createCentral(dir);
 
 		Searcher searcher = c.newSearcher();
-		Debug.line(searcher.searchTest("").getTotalCount());
+		Debug.line(searcher.search("").totalCount());
 		// searcher.searchTest("index:888").debugPrint(Page.ALL) ;
 
 	}

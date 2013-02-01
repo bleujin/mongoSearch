@@ -4,7 +4,6 @@ import junit.framework.TestCase;
 import net.ion.framework.db.Page;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
@@ -13,6 +12,7 @@ import net.ion.nsearcher.index.IndexSession;
 import net.ion.nsearcher.index.Indexer;
 import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
 import net.ion.nsearcher.indexer.storage.mongo.StorageFac;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 
 import org.apache.lucene.store.Directory;
@@ -56,7 +56,7 @@ public class TestMongoIndex extends TestCase {
 	
 	public void testSearch() throws Exception {
 		Searcher searcher = c.newSearcher();
-		searcher.searchTest("355").debugPrint(Page.ALL) ;
+		searcher.search("355").debugPrint() ;
 	}
 
 	private MyDocument createDoc(int i) {

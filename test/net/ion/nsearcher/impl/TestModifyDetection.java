@@ -10,7 +10,6 @@ import net.ion.framework.db.Page;
 import net.ion.framework.util.Debug;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.RandomUtil;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
@@ -21,6 +20,7 @@ import net.ion.nsearcher.indexer.storage.mongo.DistributedDirectory;
 import net.ion.nsearcher.indexer.storage.mongo.MongoDirectory;
 import net.ion.nsearcher.indexer.storage.mongo.RefreshStrategy;
 import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 
 import org.apache.lucene.index.CorruptIndexException;
@@ -187,7 +187,7 @@ public class TestModifyDetection extends TestCase {
 
 			Debug.line('?', cen.newReader().getIndexReader());
 
-			searcher.searchTest("bleujin").debugPrint(Page.ALL);
+			searcher.search("bleujin").debugPrint();
 			Thread.sleep(300);
 		}
 

@@ -21,7 +21,7 @@ public class TestSearchFirst extends TestCase{
 		session.newNode().put("name", "bleujin").put("explain", "ÅÂ±Ø±â°¡ ¹Ù¶÷¿¡ ÆÞ·°ÀÔ´Ï´Ù.").getSession().commit() ;
 		
 		assertEquals(1, session.createQuery().eq("name", "bleujin").find().count()) ;
-		assertEquals(1, session.createSearchQuery().term("explain", "ÅÂ±Ø±â").find().getTotalCount()) ;
+		assertEquals(1, session.createSearchQuery().term("explain", "ÅÂ±Ø±â").find().totalCount()) ;
 		MyDocument found = session.createSearchQuery().term("explain", "ÅÂ±Ø±â").findOne();
 		assertEquals("bleujin", found.get("name")) ;
 	}

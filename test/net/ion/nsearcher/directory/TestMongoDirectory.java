@@ -11,7 +11,6 @@ import net.ion.framework.util.IOUtil;
 import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.StringUtil;
 import net.ion.nsearcher.ISTestCase;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.config.Central;
 import net.ion.nsearcher.config.CentralConfig;
@@ -21,6 +20,7 @@ import net.ion.nsearcher.index.Indexer;
 import net.ion.nsearcher.indexer.storage.mongo.SimpleCentralConfig;
 import net.ion.nsearcher.indexer.storage.mongo.StorageFac;
 import net.ion.nsearcher.search.SearchResponse;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.analyzer.MyKoreanAnalyzer;
 
 import org.apache.lucene.analysis.Analyzer;
@@ -45,8 +45,8 @@ public class TestMongoDirectory extends ISTestCase {
 		Central c = config.build() ; 
 		Searcher searcher = c.newSearcher() ;
 		
-		SearchResponse response = searcher.searchTest("bleujin");
-		Debug.line(response.getTotalCount(), System.currentTimeMillis() - start, response.getDocument() ) ;
+		SearchResponse response = searcher.search("bleujin");
+		Debug.line(response.totalCount(), System.currentTimeMillis() - start, response.getDocument() ) ;
 	}
 	
 	public void testFileIndex() throws Exception {
@@ -55,8 +55,8 @@ public class TestMongoDirectory extends ISTestCase {
 		Searcher searcher = c.newSearcher() ;
 		long start = System.currentTimeMillis() ;
 		
-		SearchResponse response = searcher.searchTest("bleujin");
-		Debug.line(response.getTotalCount(), System.currentTimeMillis() - start, response.getDocument() ) ;
+		SearchResponse response = searcher.search("bleujin");
+		Debug.line(response.totalCount(), System.currentTimeMillis() - start, response.getDocument() ) ;
 	}
 	
 	
@@ -64,7 +64,7 @@ public class TestMongoDirectory extends ISTestCase {
 		Central c = writeDocument(config, analyzer) ;
 		
 		Central newC = SimpleCentralConfig.createCentral(StorageFac.createToMongo("61.250.201.78", "search", "storageTest")) ;
-		newC.newSearcher().searchTest("bleujin").debugPrint(Page.ALL) ;
+		newC.newSearcher().search("bleujin").debugPrint() ;
 		Debug.line('@', config.buildDir().getLockID(), newC.dir().getLockID()) ;
 
 		Indexer writer = c.newIndexer() ;
@@ -75,7 +75,7 @@ public class TestMongoDirectory extends ISTestCase {
 			}
 		}) ;
 
-		newC.newSearcher().searchTest("bleujin").debugPrint(Page.ALL) ;
+		newC.newSearcher().search("bleujin").debugPrint() ;
 		Debug.line() ;
 	}
 	

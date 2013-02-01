@@ -12,10 +12,10 @@ import net.ion.framework.util.ListUtil;
 import net.ion.framework.util.MapUtil;
 import net.ion.framework.util.ObjectUtil;
 import net.ion.framework.util.StringUtil;
-import net.ion.nsearcher.Searcher;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.nsearcher.search.SearchRequest;
 import net.ion.nsearcher.search.SearchResponse;
+import net.ion.nsearcher.search.Searcher;
 import net.ion.nsearcher.search.filter.FilterUtil;
 import net.ion.nsearcher.search.filter.MatchAllDocsFilter;
 import net.ion.nsearcher.search.filter.TermFilter;
@@ -179,8 +179,7 @@ public class SearchQuery implements Serializable {
 	public SearchResponse find(String query) throws IOException, ParseException {
 		Searcher searcher = session.getCentral().newSearcher();
 
-		SearchRequest request = SearchRequest.create(query, null, session.getAnalyzer());
-		request.page(page) ;
+		SearchRequest request = searcher.createRequest(query, session.getAnalyzer()).page(page) ;
 		
 		for (String sort : sorts) {
 			if (sort.endsWith(" asc")) request.ascending(StringUtil.substringBefore(sort, " ")) ;
