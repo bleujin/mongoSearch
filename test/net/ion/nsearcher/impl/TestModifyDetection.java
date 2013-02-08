@@ -38,14 +38,12 @@ public class TestModifyDetection extends TestCase {
 	public void testRunIndexer() throws Exception {
 		Central cen = SimpleCentralConfig.create(getDir()).build() ;
 
-		MyKoreanAnalyzer analyzer = new MyKoreanAnalyzer();
-
 		int i = 0 ;
 		while (i++ < 10) {
 			final Directory dir = cen.newReader().getIndexReader().directory();
 			Indexer iw = cen.newIndexer();
 			Debug.line("before" + i, currentGen(dir)) ;
-			iw.index(analyzer, new IndexJob<Void>(){
+			iw.index(new IndexJob<Void>(){
 
 				public Void handle(IndexSession session) throws Exception {
 					session.deleteAll();
@@ -113,12 +111,10 @@ public class TestModifyDetection extends TestCase {
 	public void infinityIndex() throws Exception {
 		Central cen = SimpleCentralConfig.create(getDir()).build();
 
-		MyKoreanAnalyzer analyzer = new MyKoreanAnalyzer();
-
 		int i = 0 ;
 		while (i++ < 10000) {
 			Indexer iw = cen.newIndexer();
-			iw.index(analyzer, new IndexJob<Void>(){
+			iw.index(new IndexJob<Void>(){
 
 				public Void handle(IndexSession session) throws Exception {
 					session.deleteAll();

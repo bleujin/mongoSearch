@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.Map.Entry;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import net.ion.framework.parse.gson.JsonObject;
+import net.ion.framework.util.Debug;
 import net.ion.framework.util.MapUtil;
+import net.ion.framework.util.SetUtil;
+import net.ion.framework.util.StringUtil;
 import net.ion.nsearcher.common.MyDocument;
+import net.ion.nsearcher.common.MyField;
 import net.ion.nsearcher.config.Central;
 import net.ion.nsearcher.index.IndexJob;
 import net.ion.nsearcher.index.IndexSession;
@@ -28,7 +35,7 @@ public class SearchSession implements Session {
 	private Session inner;
 	private Central central ;
 	private Analyzer analyzer;
-	private List<String> ignoreBodyField; 
+	private Set<String> ignoreBodyField; 
 	
 	private Map<String, SearchWorkspace> wss = MapUtil.newCaseInsensitiveMap() ;
 
@@ -38,7 +45,7 @@ public class SearchSession implements Session {
 		this.inner = inner;
 		this.central = central ;
 		this.analyzer = analyzer;
-		this.ignoreBodyField = new ArrayList<String>();
+		this.ignoreBodyField = SetUtil.newSet() ;
 	}
 
 	static SearchSession create(Session inner, Central central, Analyzer analyzer) {
@@ -191,8 +198,7 @@ public class SearchSession implements Session {
 				public Integer handle(IndexSession writer) throws IOException {
 					int result = 0;
 					for (Node node : nodeList) {
-						MyDocument doc = SearchWorkspace.createDocument(node);
-						doc.setIgnoreBodyField(ignoreBodyField);
+						MyDocument doc = createDocument(node);
 						writer.updateDocument(doc);
 						result++;
 					}
@@ -208,10 +214,27 @@ public class SearchSession implements Session {
 			}
 		}
 		report.addInfoLineWithTime("Reindexing End. ( total : " + result + " )");
-		report.setEnded(true);
-		return result;
+		report.setEnded(true) ;
+		return result ;
 	}
 
+	MyDocument createDocument(Node node) {
+		JsonObject jsonProp = JsonObject.fromObject(node.toPropertyMap());
+		
+		final MyDocument result = MyDocument.newDocument(node.getIdentifier());
+		result.add(jsonProp) ;
+		result.addUnknown(NodeConstants.ARADON_UID, node.getAradonId().getUid());
+		result.addUnknown(NodeConstants.ARADON_GROUP, StringUtil.defaultIfEmpty(node.getAradonId().getGroup(), AradonId.EMPTY.getGroup()));
+		result.keyword(NodeConstants.WSNAME, node.getWorkspaceName());
+		
+		for (String igfield : ignoreBodyField) {
+			result.removeField(igfield) ;
+		}
+		
+		return result;
+	}
+	
+	
 	private void deleteQuery(final Query query) {
 		addJobEntry(new IndexJob<Boolean>() {
 			public Boolean handle(IndexSession session) throws IOException {

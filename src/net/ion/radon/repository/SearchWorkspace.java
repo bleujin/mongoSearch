@@ -61,16 +61,6 @@ public class SearchWorkspace extends Workspace {
 		return searchSession.getReal().getWorkspace(wname, option);
 	}
 
-	static MyDocument createDocument(Node node) {
-		Map<String, ? extends Object> props = node.toPropertyMap();
-		MyDocument newDocument = MyDocument.newDocument(node.getIdentifier(), props);
-		newDocument.add(MyField.unknown(NodeConstants.ARADON_UID, node.getAradonId().getUid()));
-
-		newDocument.add(MyField.unknown(NodeConstants.ARADON_GROUP, StringUtil.defaultIfEmpty(node.getAradonId().getGroup(), AradonId.EMPTY.getGroup())));
-		newDocument.add(MyField.keyword(NodeConstants.WSNAME, node.getWorkspaceName()));
-		return newDocument;
-	}
-
 	/* update end */
 	protected DBCollection getCollection() {
 		return getRealWorkspace().getCollection();
@@ -166,7 +156,7 @@ public class SearchWorkspace extends Workspace {
 		IndexJob<Boolean> commitJob = new IndexJob<Boolean>() {
 			public Boolean handle(IndexSession writer) throws IOException {
 				for (Node node : targets) {
-					writer.updateDocument(createDocument(node));
+					writer.updateDocument(session.createDocument(node));
 				}
 				return true ;
 			}

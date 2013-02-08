@@ -40,7 +40,7 @@ public class TestDirectory extends ISTestCase{
 		Future<Boolean> f2 = ct.newIndexer().asyncIndex("bleujin", anal, new MyIndexJob("bleujin"));
 		f2.get() ;
 		
-		ct.newIndexer().index(new MyKoreanAnalyzer(), new IndexJob<Void>() {
+		ct.newIndexer().index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				session.appendFrom(cs.dir()) ;
 				return null;
@@ -100,7 +100,7 @@ public class TestDirectory extends ISTestCase{
 		searcher.addPostListener(new StdOutProcessor()) ;
 		assertEquals(6, searcher.createRequest("bleujin").find().totalCount()) ;
 
-		cen1.newIndexer().index(new MyKoreanAnalyzer(), new IndexJob<Void>() {
+		cen1.newIndexer().index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				session.appendFrom(cen2.dir()) ;
 				return null;
@@ -146,7 +146,7 @@ public class TestDirectory extends ISTestCase{
 	private Central write2Dir() throws LockObtainFailedException, IOException {
 		Central cen = CentralConfig.newRam().build() ;
 		Indexer writer = cen.newIndexer() ;
-		writer.index(new CJKAnalyzer(Version.LUCENE_CURRENT), new IndexJob<Void>() {
+		writer.index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				for (int i = 0; i < 3 ; i++) {
 					MyDocument doc = MyDocument.testDocument() ;
@@ -165,7 +165,7 @@ public class TestDirectory extends ISTestCase{
 		final Central tempCen = CentralConfig.newRam().build() ;
 		
 		Indexer tempWriter = tempCen.newIndexer() ;
-		tempWriter.index(new CJKAnalyzer(Version.LUCENE_36), new IndexJob<Void>() {
+		tempWriter.index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				MyDocument doc = MyDocument.testDocument().add(MyField.text("name", "bleujin"));
 				session.insertDocument(doc) ;
@@ -174,9 +174,8 @@ public class TestDirectory extends ISTestCase{
 		}) ;
 		
 		Central cen = CentralConfig.newRam().build() ;
-		MyKoreanAnalyzer analyzer = new MyKoreanAnalyzer();
 		Indexer writer = cen.newIndexer() ;
-		writer.index(analyzer, new IndexJob<Void>() {
+		writer.index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				MyDocument doc = MyDocument.testDocument().add(MyField.text("name", "hero"));
 				session.insertDocument(doc) ;

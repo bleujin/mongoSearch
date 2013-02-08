@@ -93,7 +93,7 @@ public class TestDaemonWriter extends TestCase {
 
 		Indexer wr = c.newIndexer() ;
 		long start = System.currentTimeMillis() ;
-		wr.index(new MyKoreanAnalyzer(), new IndexJob<Void>() {
+		wr.index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				for (int i : ListUtil.rangeNum(1000)) {
 					MyDocument doc = MyDocument.testDocument().add(MyField.number("index", i)).add(MyField.text("file", readString)) ;
@@ -116,7 +116,7 @@ public class TestDaemonWriter extends TestCase {
 		Central c = CentralConfig.newRam().build() ;
 
 		Indexer wr = c.newIndexer() ;
-		wr.index(new MyKoreanAnalyzer(), new IndexJob<Void>() {
+		wr.index(new IndexJob<Void>() {
 
 			public Void handle(IndexSession session) throws Exception {
 				for (int i : ListUtil.rangeNum(100)) {
@@ -140,9 +140,7 @@ public class TestDaemonWriter extends TestCase {
 
 		Indexer wr = c.newIndexer() ;
 		final String readString = IOUtil.toString(new FileInputStream("libsource/build_fat.xml")); //3745 byte
-		MyKoreanAnalyzer analyzer = new MyKoreanAnalyzer();
-		
-		wr.index(analyzer, new IndexJob<Void>() {
+		wr.index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				for (int i : ListUtil.rangeNum(1000)) {
 					MyDocument doc = MyDocument.testDocument().add(MyField.number("index", i)).add(MyField.text("file", readString)) ;

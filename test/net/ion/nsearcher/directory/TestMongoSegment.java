@@ -24,7 +24,7 @@ public class TestMongoSegment extends TestCase {
 		Central c = SimpleCentralConfig.createCentral(dir);
 		
 		Indexer writer = c.newIndexer() ;
-		writer.index(new KoreanAnalyzer(), new IndexJob<Void>(){
+		writer.index(new IndexJob<Void>(){
 
 			public Void handle(IndexSession session) throws Exception {
 				for (int i = 0; i < 30 ; i++) {
@@ -41,7 +41,7 @@ public class TestMongoSegment extends TestCase {
 		Central c = SimpleCentralConfig.createCentral(dir) ;
 
 		Indexer writer = c.newIndexer() ;
-		writer.index(new KoreanAnalyzer(), new IndexJob<Void>() {
+		writer.index(new IndexJob<Void>() {
 
 			public Void handle(IndexSession session) throws Exception {
 				for (int i = 0; i < 30 ; i++) {
@@ -102,10 +102,10 @@ public class TestMongoSegment extends TestCase {
 		Central c = SimpleCentralConfig.createCentral(dir);
 		
 		Indexer writer = c.newIndexer() ;
-		KoreanAnalyzer analyzer = new KoreanAnalyzer();
+		
 		for (int i = 0; i < 30 ; i++) {
 			final int idx = i ;
-			writer.index(analyzer, new IndexJob<Void>(){
+			writer.index(new IndexJob<Void>(){
 				public Void handle(IndexSession session) throws Exception {
 					MyDocument doc = MyDocument.testDocument().add(MyField.keyword("name", "bleujin")).add(MyField.number("index", idx));
 					session.insertDocument(doc) ;

@@ -21,7 +21,7 @@ public class TestSearchFramework extends TestCase{
 		
 		Indexer wr = cen.newIndexer() ;
 		
-		Action action = wr.index(new MyKoreanAnalyzer(), new IndexJob<Action>(){
+		Action action = wr.index(new IndexJob<Action>(){
 			public Action handle(IndexSession session) throws Exception {
 				Action action = session.updateDocument(MyDocument.testDocument().keyword("name", "bleujin")) ;
 				return action;

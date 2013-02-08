@@ -1,5 +1,6 @@
 package net.ion.radon.repository.search;
 
+import net.ion.framework.util.Debug;
 import net.ion.nsearcher.common.MyDocument;
 import net.ion.radon.repository.Node;
 import net.ion.radon.repository.NodeConstants;
@@ -43,11 +44,24 @@ public class TestDocument extends TestBaseSearch{
 		session.commit() ;
 
 		session.waitForFlushed() ;
-		MyDocument doc = session.createSearchQuery().find().getDocument().get(0) ;
+		MyDocument doc = session.createSearchQuery().findOne() ;
 		assertEquals(session.getCurrentWorkspaceName(), doc.get(NodeConstants.WSNAME)) ;
 		assertEquals(node.getAradonId().getGroup(), doc.get(NodeConstants.ARADON_GROUP)) ;
 		assertEquals(node.getAradonId().getUid(), doc.get(NodeConstants.ARADON_UID)) ;
 	}
 	
+	
+	public void testIgnore() throws Exception {
+		session.addIgnoreBodyField("ig", "name.fname") ;
+		
+		session.newNode().put("ig", "val")
+			.inner("name").put("fname", "bleu").put("lname", "jin").put("index", 0).getParent().getSession().commit() ;
+
+		session.waitForFlushed() ;
+		MyDocument doc = session.createSearchQuery().findOne() ;
+		assertEquals(true, doc.get("ig")== null) ;
+		assertEquals(true, doc.get("name.fname") == null) ;
+		assertEquals(true, doc.get("name.lname") != null) ;
+	}
 	
 }

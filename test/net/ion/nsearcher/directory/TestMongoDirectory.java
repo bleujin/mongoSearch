@@ -95,7 +95,7 @@ public class TestMongoDirectory extends ISTestCase {
 		
 		final String readString = IOUtil.toString(new FileReader(new File("test/" + StringUtil.replace(this.getClass().getCanonicalName(), ".", "/")) + ".java")) ;
 		final String extString = IOUtil.toString(new FileReader(new File("build.xml"))) ;
-		indexer.index(new MyKoreanAnalyzer(), new IndexJob<Void>() {
+		indexer.index(new IndexJob<Void>() {
 
 			public Void handle(IndexSession session) throws Exception {
 				for (int i = 0; i < 1000; i++) {

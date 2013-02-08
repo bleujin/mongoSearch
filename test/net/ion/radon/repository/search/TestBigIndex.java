@@ -86,7 +86,7 @@ public class TestBigIndex extends TestCase {
 		final ExecutorService es = Executors.newFixedThreadPool(5);
 
 		Indexer iw = mycen.newIndexer();
-		iw.index(new MyKoreanAnalyzer(), new IndexJob<Void>() {
+		iw.index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				QueryParser parser = new QueryParser(Version.LUCENE_36, "IS-all", new MyKoreanAnalyzer());
 				session.deleteQuery(parser.parse("name:bleujin")) ;
@@ -114,7 +114,7 @@ public class TestBigIndex extends TestCase {
 		es.submit(new Callable<Boolean>() {
 			public Boolean call() throws Exception {
 				Indexer iw = mycen.newIndexer();
-				iw.index(new MyKoreanAnalyzer(), new IndexJob<Void>(){
+				iw.index(new IndexJob<Void>(){
 
 					public Void handle(IndexSession session) throws Exception {
 						session.insertDocument(MyDocument.testDocument().add(MyField.keyword("name", "bleujin")));

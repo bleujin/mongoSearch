@@ -49,6 +49,8 @@ public class TestSearchFind extends TestBaseSearch{
 		addNode(2) ;
 		assertEquals(1, session.createSearchQuery().between("age", 20, 22).find().totalCount()) ;
 		assertEquals(1, session.createSearchQuery().between("age", 25, 30).find().totalCount()) ;
+		session.createSearchQuery().find().debugPrint() ;
+		
 		assertEquals(2, session.createSearchQuery().between("friend.age", 30, 30).find().totalCount()) ;
 	}
 	

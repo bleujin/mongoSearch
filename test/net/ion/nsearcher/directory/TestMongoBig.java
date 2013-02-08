@@ -70,7 +70,7 @@ public class TestMongoBig extends TestCase {
 
 		Indexer di = c.newIndexer();
 		final String buildString = IOUtil.toString(new FileInputStream(new File("build.xml")));
-		di.index(new StandardAnalyzer(Version.LUCENE_CURRENT), new IndexJob<Void>() {
+		di.index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
 				for (int i : ListUtil.rangeNum(100000)) {
 					MyDocument doc = MyDocument.testDocument();

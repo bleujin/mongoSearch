@@ -36,7 +36,7 @@ public class TestMongoIndex extends TestCase {
 
 	public void testIndex() throws Exception {
 		Indexer iw = c.newIndexer();
-		iw.index(new MyKoreanAnalyzer(), new IndexJob<Void>(){
+		iw.index(new IndexJob<Void>(){
 
 			public Void handle(IndexSession session) throws Exception {
 				for (int i : ListUtil.rangeNum(100)) {
