@@ -24,19 +24,19 @@ public class TestSearchSession extends TestBaseSearch{
 		session.newNode().put("name", "bleujin").getSession().commit() ;
 		
 		session.waitForFlushed() ;
-		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ; 
+		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().size()) ; 
 		
 		old.createQuery().eq("name", "bleujin").updateChain().put("name", "hero").update() ;
 		
 		
 		assertEquals(1, old.createQuery().eq("name", "hero").find().count());
-		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ; // not applied
+		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().size()) ; // not applied
 		
 		session.resyncIndex(PropertyQuery.create().eq("name", "hero")) ;
 		session.waitForFlushed() ;
 		
-		assertEquals(0, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ; 
-		assertEquals(1, session.createSearchQuery().term("name", "hero").find().totalCount()) ; 
+		assertEquals(0, session.createSearchQuery().term("name", "bleujin").find().size()) ; 
+		assertEquals(1, session.createSearchQuery().term("name", "hero").find().size()) ; 
 	}
 	
 	public void testSyncLimit() throws Exception {
@@ -45,21 +45,21 @@ public class TestSearchSession extends TestBaseSearch{
 				newNode().put("name", "jin").getSession().commit() ;
 		
 		session.waitForFlushed() ;
-		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ; 
+		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().size()) ; 
 		
 		old.createQuery().eq("name", "bleujin").updateChain().put("name", "hero").update() ;
 		
 		
 		assertEquals(1, old.createQuery().eq("name", "hero").find().count());
-		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ; // not applied
-		assertEquals(1, session.createSearchQuery().term("name", "jin").find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().size()) ; // not applied
+		assertEquals(1, session.createSearchQuery().term("name", "jin").find().size()) ;
 		
 		int future = session.resyncIndex(PropertyQuery.create().eq("name", "hero")) ;
 		assertTrue(future == 1 ) ;
 		
-		assertEquals(0, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ; 
-		assertEquals(1, session.createSearchQuery().term("name", "hero").find().totalCount()) ; 
-		assertEquals(1, session.createSearchQuery().term("name", "jin").find().totalCount()) ; 
+		assertEquals(0, session.createSearchQuery().term("name", "bleujin").find().size()) ; 
+		assertEquals(1, session.createSearchQuery().term("name", "hero").find().size()) ; 
+		assertEquals(1, session.createSearchQuery().term("name", "jin").find().size()) ; 
 	}
 	
 	public void testOppsCommit() throws Exception {
@@ -77,7 +77,7 @@ public class TestSearchSession extends TestBaseSearch{
 //		otherSession.commit() ;
 		
 		
-		Debug.line(otherSession.createSearchQuery().find().totalCount()) ;
+		Debug.line(otherSession.createSearchQuery().find().size()) ;
 		
 	}
 	
@@ -90,7 +90,7 @@ public class TestSearchSession extends TestBaseSearch{
 		int coiunt = session.getIndexInfo(new IndexInfoHandler<Integer>() {
 			public Integer handle(SearchSession session, InfoReader infoReader) {
 				try {
-					return session.createSearchQuery().find().totalCount();
+					return session.createSearchQuery().find().size();
 				} catch (IOException e) {
 					return 0 ;
 				} catch (ParseException e) {
@@ -108,7 +108,7 @@ public class TestSearchSession extends TestBaseSearch{
 			final Map<String, Object> map = new CaseInsensitiveHashMap<Object>();
 			try {
 				final Directory dir = infoReader.getIndexReader().directory();
-				map.put("numDoc", session.createSearchQuery().find().totalCount());
+				map.put("numDoc", session.createSearchQuery().find().size());
 				map.put("allNumDoc", infoReader.numDoc());
 				map.put("indexPath", dir.toString());
 				map.put("lastModified", DateFormatUtil.date2String(new Date(IndexReader.lastModified(dir)), "yyyy-MM-dd HH:mm:ss"));

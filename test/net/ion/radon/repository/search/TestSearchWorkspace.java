@@ -18,7 +18,7 @@ public class TestSearchWorkspace extends TestBaseSearch {
 		
 		
 		assertEquals(1, session.createQuery().eq("name", "bleujin").find().count()) ;
-		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().size()) ;
 		
 		session.changeWorkspace("newtest") ;
 		session.dropWorkspace() ;
@@ -47,14 +47,14 @@ public class TestSearchWorkspace extends TestBaseSearch {
 		
 		
 		assertEquals(1, session.createQuery().find().count()) ;
-		assertEquals(1, session.createSearchQuery().find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().find().size()) ;
 		
-		assertEquals(1, session.createSearchQuery().wsname(currentWName).find().totalCount()) ;
-		assertEquals(1, session.createSearchQuery().wsname("newtest").find().totalCount()) ;
-		assertEquals(2, session.createSearchQuery().inAllWorkspace().find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().wsname(currentWName).find().size()) ;
+		assertEquals(1, session.createSearchQuery().wsname("newtest").find().size()) ;
+		assertEquals(2, session.createSearchQuery().inAllWorkspace().find().size()) ;
 		
 		
-		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find().size()) ;
 	}
 	
 	public void testAradonId() throws Exception {
@@ -63,9 +63,9 @@ public class TestSearchWorkspace extends TestBaseSearch {
 		session.newNode().setAradonId("emp", 4040) .put("index", 0).put("name", "bleujin").getSession().commit() ;
 		session.waitForFlushed() ;
 		
-		assertEquals(1, session.createSearchQuery().aradonGroup("emp").find().totalCount()) ;
-		assertEquals(1, session.createSearchQuery().aradonUid(4040).find().totalCount()) ;
-		assertEquals(1, session.createSearchQuery().aradonId("emp", 4040).find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().aradonGroup("emp").find().size()) ;
+		assertEquals(1, session.createSearchQuery().aradonUid(4040).find().size()) ;
+		assertEquals(1, session.createSearchQuery().aradonId("emp", 4040).find().size()) ;
 	}
 	
 	public void testMakeIndex() throws Exception {

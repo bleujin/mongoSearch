@@ -46,7 +46,7 @@ public class TestMongoDirectory extends ISTestCase {
 		Searcher searcher = c.newSearcher() ;
 		
 		SearchResponse response = searcher.search("bleujin");
-		Debug.line(response.totalCount(), System.currentTimeMillis() - start, response.getDocument() ) ;
+		Debug.line(response.size(), System.currentTimeMillis() - start, response.getDocument() ) ;
 	}
 	
 	public void testFileIndex() throws Exception {
@@ -56,7 +56,7 @@ public class TestMongoDirectory extends ISTestCase {
 		long start = System.currentTimeMillis() ;
 		
 		SearchResponse response = searcher.search("bleujin");
-		Debug.line(response.totalCount(), System.currentTimeMillis() - start, response.getDocument() ) ;
+		Debug.line(response.size(), System.currentTimeMillis() - start, response.getDocument() ) ;
 	}
 	
 	

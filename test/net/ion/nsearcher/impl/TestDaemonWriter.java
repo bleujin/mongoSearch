@@ -58,12 +58,12 @@ public class TestDaemonWriter extends TestCase {
 		f2.get() ;
 		
 		Searcher searcher = c.newSearcher();
-		assertEquals(1, searcher.search("jini").totalCount());
+		assertEquals(1, searcher.search("jini").size());
 		
 		f1.get() ;
 
 		searcher = c.newSearcher();
-		assertEquals(11, searcher.search("").totalCount());
+		assertEquals(11, searcher.search("").size());
 	}
 
 	
@@ -81,7 +81,7 @@ public class TestDaemonWriter extends TestCase {
 		future.get() ;
 		
 		Searcher searcher = c.newSearcher();
-		assertEquals(1, searcher.search("").totalCount());
+		assertEquals(1, searcher.search("").size());
 	}
 	
 	
@@ -129,7 +129,7 @@ public class TestDaemonWriter extends TestCase {
 
 		Searcher searcher = c.newSearcher() ;
 		searcher.search("").debugPrint() ;
-		assertEquals(100, searcher.search("").totalCount()) ;
+		assertEquals(100, searcher.search("").size()) ;
 	}
 	
 	

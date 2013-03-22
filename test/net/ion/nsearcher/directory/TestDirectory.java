@@ -47,7 +47,7 @@ public class TestDirectory extends ISTestCase{
 			}
 		}) ;
 		
-		assertEquals(10, ct.newSearcher().search("").totalCount()) ;
+		assertEquals(10, ct.newSearcher().search("").size()) ;
 	}
 	
 	
@@ -98,7 +98,7 @@ public class TestDirectory extends ISTestCase{
 
 		Searcher searcher = cen1.newSearcher() ;
 		searcher.addPostListener(new StdOutProcessor()) ;
-		assertEquals(6, searcher.createRequest("bleujin").find().totalCount()) ;
+		assertEquals(6, searcher.createRequest("bleujin").find().size()) ;
 
 		cen1.newIndexer().index(new IndexJob<Void>() {
 			public Void handle(IndexSession session) throws Exception {
@@ -110,16 +110,16 @@ public class TestDirectory extends ISTestCase{
 		searcher = cen1.newSearcher() ;
 		searcher.search("").debugPrint() ;
 		
-		assertEquals(9, searcher.createRequest("bleujin").find().totalCount()) ;
+		assertEquals(9, searcher.createRequest("bleujin").find().size()) ;
 		
 		searcher = cen1.newSearcher() ;
 		searcher.addPostListener(new StdOutProcessor()) ;
-		assertEquals(9, searcher.createRequest("bleujin").find().totalCount()) ;
+		assertEquals(9, searcher.createRequest("bleujin").find().size()) ;
 		
 		
 		searcher = cen2.newSearcher() ;
 		searcher.addPostListener(new StdOutProcessor()) ;
-		assertEquals(3, searcher.createRequest("bleujin").find().totalCount()) ;
+		assertEquals(3, searcher.createRequest("bleujin").find().size()) ;
 	}
 
 
@@ -185,7 +185,7 @@ public class TestDirectory extends ISTestCase{
 		}) ;
 		
 		Searcher searcher = cen.newSearcher() ;
-		assertEquals(2, searcher.createRequest("").find().totalCount()) ;
+		assertEquals(2, searcher.createRequest("").find().size()) ;
 	}
 	
 }

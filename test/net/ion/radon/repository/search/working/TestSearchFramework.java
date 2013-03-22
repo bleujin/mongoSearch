@@ -28,7 +28,7 @@ public class TestSearchFramework extends TestCase{
 			}
 		}) ;
 		
-		assertEquals(1, cen.newSearcher().search("bleujin").totalCount());
+		assertEquals(1, cen.newSearcher().search("bleujin").size());
 		assertEquals(Action.Update, action) ;
 	}
 	

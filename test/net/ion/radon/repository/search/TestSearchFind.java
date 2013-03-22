@@ -23,41 +23,41 @@ public class TestSearchFind extends TestBaseSearch{
 	public void testTerm() throws Exception {
 		addNode(2) ;
 		
-		assertEquals(2, session.createSearchQuery().term("name", "bleujin").find().totalCount()) ; 
-		assertEquals(1, session.createSearchQuery().term("index", "0").find().totalCount()) ; 
-		assertEquals(2, session.createSearchQuery().term("text", "hero").find().totalCount()) ; 
+		assertEquals(2, session.createSearchQuery().term("name", "bleujin").find().size()) ; 
+		assertEquals(1, session.createSearchQuery().term("index", "0").find().size()) ; 
+		assertEquals(2, session.createSearchQuery().term("text", "hero").find().size()) ; 
 	}
 	
 	public void testLessThen() throws Exception {
 		addNode(2) ;
 		
-		assertEquals(1, session.createSearchQuery().lt("index", 1).find().totalCount()) ;
-		assertEquals(1, session.createSearchQuery().lt("index", 1L).find().totalCount()) ;
-		assertEquals(2, session.createSearchQuery().lte("name", "bleuz").find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().lt("index", 1).find().size()) ;
+		assertEquals(1, session.createSearchQuery().lt("index", 1L).find().size()) ;
+		assertEquals(2, session.createSearchQuery().lte("name", "bleuz").find().size()) ;
 	}
 
 	public void testGreaterThen() throws Exception {
 		addNode(2) ;
 		
-		assertEquals(1, session.createSearchQuery().gt("index", 0).find().totalCount()) ;
-		assertEquals(1, session.createSearchQuery().gt("index", 0L).find().totalCount()) ;
-		assertEquals(2, session.createSearchQuery().gte("name", "abcd").find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().gt("index", 0).find().size()) ;
+		assertEquals(1, session.createSearchQuery().gt("index", 0L).find().size()) ;
+		assertEquals(2, session.createSearchQuery().gte("name", "abcd").find().size()) ;
 	}
 	
 
 	public void testBetween() throws Exception {
 		addNode(2) ;
-		assertEquals(1, session.createSearchQuery().between("age", 20, 22).find().totalCount()) ;
-		assertEquals(1, session.createSearchQuery().between("age", 25, 30).find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().between("age", 20, 22).find().size()) ;
+		assertEquals(1, session.createSearchQuery().between("age", 25, 30).find().size()) ;
 		session.createSearchQuery().find().debugPrint() ;
 		
-		assertEquals(2, session.createSearchQuery().between("friend.age", 30, 30).find().totalCount()) ;
+		assertEquals(2, session.createSearchQuery().between("friend.age", 30, 30).find().size()) ;
 	}
 	
 	public void testBetweenTerm() throws Exception {
 		addNode(2) ;
-		assertEquals(1, session.createSearchQuery().between("address.city", "seoul", "seoul").find().totalCount()) ;
-		assertEquals(2, session.createSearchQuery().between("address.city", "busan", "seoul").find().totalCount()) ;
+		assertEquals(1, session.createSearchQuery().between("address.city", "seoul", "seoul").find().size()) ;
+		assertEquals(2, session.createSearchQuery().between("address.city", "busan", "seoul").find().size()) ;
 	}
 	
 	

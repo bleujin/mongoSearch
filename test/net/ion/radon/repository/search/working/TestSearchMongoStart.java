@@ -21,23 +21,23 @@ public class TestSearchMongoStart extends TestBaseSearch{
 		
 		assertEquals(1, session.createQuery().find().count()) ;
 		SearchResponse response = session.createSearchQuery().term("name", "bleujin").find("") ; 
-		assertEquals(1, response.totalCount()) ;
+		assertEquals(1, response.size()) ;
 		
 		
-		assertEquals(1, session.createSearchQuery().find("bleujin").totalCount()) ;
-		assertEquals(1, session.createSearchQuery().term("index", "0").find("").totalCount()) ;
+		assertEquals(1, session.createSearchQuery().find("bleujin").size()) ;
+		assertEquals(1, session.createSearchQuery().term("index", "0").find("").size()) ;
 	}
 
 	public void testDelete() throws Exception {
 		addNode(2);
 
 		assertEquals(2, session.createQuery().find().count()) ;
-		assertEquals(2, session.createSearchQuery().term("name", "bleujin").find("").totalCount()) ;
+		assertEquals(2, session.createSearchQuery().term("name", "bleujin").find("").size()) ;
 
 		session.createQuery().lte("index", 0).remove() ;
 		
 		assertEquals(1, session.createQuery().find().count()) ;
-		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find("").totalCount()) ;
+		assertEquals(1, session.createSearchQuery().term("name", "bleujin").find("").size()) ;
 	}
 	
 	public void testUpdateChain() throws Exception {
@@ -48,8 +48,8 @@ public class TestSearchMongoStart extends TestBaseSearch{
 			.inlist("address", MapUtil.chainKeyMap().put("city", "seoul").put("ga",113)).update() ;
 		
 		assertEquals(1, session.createQuery().eq("name", "hero").find().count()) ;
-		assertEquals(1, session.createSearchQuery().term("name", "hero").find("").totalCount()) ;
-		assertEquals(1, session.createSearchQuery().term("ival", "1").find("").totalCount()) ;
+		assertEquals(1, session.createSearchQuery().term("name", "hero").find("").size()) ;
+		assertEquals(1, session.createSearchQuery().term("ival", "1").find("").size()) ;
 	}
 	
 	

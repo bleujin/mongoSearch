@@ -70,7 +70,7 @@ public class TestBigIndex extends TestCase {
 
 		// Debug.line(session.createSearchQuery().term("index", "333").find().getTotalCount()) ;
 		Searcher searcher = mycen.newSearcher();
-		Debug.line(searcher.search("index:333").totalCount());
+		Debug.line(searcher.search("index:333").size());
 	}
 
 	public void testSearch() throws Exception {
@@ -100,7 +100,7 @@ public class TestBigIndex extends TestCase {
 				try {
 					Debug.line("Searched Completed");
 					Searcher searcher = mycen.newSearcher();
-					searcher.search("index:" + RandomUtil.nextInt(1000)).totalCount();
+					searcher.search("index:" + RandomUtil.nextInt(1000)).size();
 					Thread.sleep(50);
 				} catch (Throwable th) {
 					th.printStackTrace() ;

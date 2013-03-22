@@ -20,6 +20,6 @@ public class TestSearchDelete  extends TestBaseSearch {
 		session.waitForFlushed() ;
 
 		assertEquals(0, session.createQuery().find().count()) ;
-		assertEquals(0, session.createSearchQuery().find().totalCount()) ;
+		assertEquals(0, session.createSearchQuery().find().size()) ;
 	}
 }

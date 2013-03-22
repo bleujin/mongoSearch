@@ -91,7 +91,7 @@ public class TestMongoBig extends TestCase {
 		Central c = SimpleCentralConfig.createCentral(dir);
 
 		Searcher searcher = c.newSearcher();
-		Debug.line(searcher.search("").totalCount());
+		Debug.line(searcher.search("").size());
 		// searcher.searchTest("index:888").debugPrint(Page.ALL) ;
 
 	}

@@ -37,7 +37,7 @@ public class TestAnalyzer extends TestBaseSearch{
 		session.commit();
 		session.waitForFlushed();
 		
-		Debug.line(session.createSearchQuery().find("วร").totalCount());
+		Debug.line(session.createSearchQuery().find("วร").size());
 	}
 	
 	public void testSearch() throws Exception {
